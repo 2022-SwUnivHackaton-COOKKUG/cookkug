@@ -3,16 +3,17 @@ part 'user.g.dart';
 
 @JsonSerializable()
 class User {
-  final String id;
   final String uid;
-  final DateTime birthDate;
   final String name; //정렬할때 고려하기위한 데이터
+  final String email;
+  final List friends;
+
 
   User({
-    required this.id,
     required this.uid,
-    required this.birthDate,
     required this.name,
+    required this.email,
+    required this.friends,
   });
 
   factory User.fromJson(json) => _$UserFromJson(json);

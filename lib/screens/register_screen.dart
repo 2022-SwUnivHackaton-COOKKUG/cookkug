@@ -1,3 +1,4 @@
+import 'package:cookkug/services/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,8 +18,6 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  final _auth = FirebaseAuth.instance;
-
   final _formKey = GlobalKey<FormState>();
 
   final eController = TextEditingController();
@@ -31,35 +30,16 @@ class _SignUpState extends State<SignUp> {
 
   void signUp(String email, String password) async {
     if (_formKey.currentState!.validate()) {
-      try {
-        await _auth.createUserWithEmailAndPassword(
-            email: email, password: password);
-        registerDetails();
+      var navigator = Navigator.of(context);
+      bool result = await FirebaseService().registerWithEmailAndPassword(email:email,password:password);
+      if(result){
         Fluttertoast.showToast(msg: '쿡꾹 계정이 생성되었습니다.');
-        Navigator.pop(context);
-      } catch (e) {
-        Fluttertoast.showToast(msg: e.toString());
+        navigator.pop();
+        return;
       }
+      Fluttertoast.showToast(msg: '이미 가입된 이메일입니다');
     }
   }
-
-  void registerDetails() {
-    final CollectionReference _user =
-        FirebaseFirestore.instance.collection('user');
-
-    _user.doc(FirebaseAuth.instance.currentUser!.uid).set({
-      'email': eController.text,
-      'name': nController.text,
-      //'address': address2,
-      'friends': FieldValue.arrayUnion(_init)
-    });
-    //firestore database에 현재 등록 유저의 정보 올리기
-    //<Users 컬렉션 -> 현재 유저의 uid 도큐먼트>에 유저 데이터 추가
-    //컬렉션에 도큐먼트를 추가할 때는 add를 사용하였지만
-    //도큐먼트에 데이터를 추가할 때는 set을 사용한다.
-    //set 안에는 Map형식의 값을 넣어줘야 한다.
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,7 +91,8 @@ class _SignUpState extends State<SignUp> {
                         textInputAction: TextInputAction.next,
                         decoration: InputDecoration(
                             prefixIcon: const Icon(Icons.person),
-                            contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                            contentPadding:
+                                const EdgeInsets.fromLTRB(20, 15, 20, 15),
                             hintText: "이름",
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10)))),
@@ -134,7 +115,8 @@ class _SignUpState extends State<SignUp> {
                         textInputAction: TextInputAction.next,
                         decoration: InputDecoration(
                             prefixIcon: const Icon(Icons.mail),
-                            contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                            contentPadding:
+                                const EdgeInsets.fromLTRB(20, 15, 20, 15),
                             hintText: "이메일",
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10)))),
@@ -156,7 +138,8 @@ class _SignUpState extends State<SignUp> {
                       textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
                           prefixIcon: const Icon(Icons.vpn_key),
-                          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                          contentPadding:
+                              const EdgeInsets.fromLTRB(20, 15, 20, 15),
                           hintText: "비밀번호",
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10))),
@@ -180,7 +163,8 @@ class _SignUpState extends State<SignUp> {
                       textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
                           prefixIcon: const Icon(Icons.vpn_key),
-                          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                          contentPadding:
+                              const EdgeInsets.fromLTRB(20, 15, 20, 15),
                           hintText: "비밀번호 확인",
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10))),

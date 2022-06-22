@@ -24,5 +24,3 @@ SW중심대학협의회 해커톤 - 쿡꾹
 4. git branch를 통해 브랜치가 올바르게 바뀌었나 확인
 5. 작업후 git add 작업한 파일(편하게 . 사용도 가능하긴 함) 후 git commit ,git push를 통해 해당 브랜치에 기능 구현을 끝마치고 github에 업로드하기 -> 이후 선영님께 알리고 바로 merge되는걸 확인하는게 좋을거라 생각
 6. 선영님이 main브랜치에서 merge하기(여러명이서 main에 push할경우 conflict가 자주나기때문에 이는 피하는게 좋지않을까 생각)
-
-# cookkug

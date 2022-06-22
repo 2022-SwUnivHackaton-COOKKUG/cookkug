@@ -1,3 +1,4 @@
+import 'package:cookkug/services/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -149,7 +150,7 @@ class LoginScreen extends StatelessWidget {
             Container(
               margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
               child: ElevatedButton(
-                onPressed: ()=>googleSignIn(context),
+                onPressed: () => googleSignIn(context),
                 style: ElevatedButton.styleFrom(primary: Colors.white),
                 child: const Image(
                   image: AssetImage('assets/images/google.png'),
@@ -166,25 +167,13 @@ class LoginScreen extends StatelessWidget {
   }
 
   void googleSignIn(BuildContext context) async {
-    final googleSign = GoogleSignIn();
-    final googleUser = await googleSign.signIn();
-    if (googleUser == null) return;
-
-    final googleAuth = await googleUser.authentication;
-
-    final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
-
-    try {
-      await FirebaseAuth.instance
-          .signInWithCredential(credential)
-          .then((value) {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const MainScreen()),
-            (route) => false);
-      });
-    } catch (e) {
-      Fluttertoast.showToast(msg: e.toString());
+    var navigator = Navigator.of(context);
+    bool result = await FirebaseService().registerWithGoogleSignIn();
+    if (result) {
+      navigator.pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const MainScreen()),
+        (route) => false,
+      );
     }
   }
 }
