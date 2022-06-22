@@ -12,63 +12,67 @@ class CookingCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {},
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-        child: PhysicalModel(
-          color: kWhiteColor,
-          elevation: 5,
-          borderRadius: BorderRadius.circular(10),
-          child: Column(
-            children: [
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
-                  ),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: CachedNetworkImage(
-                      imageUrl: cook.image,
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) => Container(),
-                      errorWidget: (context, url, error) =>
-                          const Center(child: Icon(Icons.error_outline)),
-                    ),
-                  ),
+        width: 120,
+        margin: const EdgeInsets.only(right: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: SizedBox(
+                width: 120,
+                height: 120,
+                child: CachedNetworkImage(
+                  imageUrl: cook.image,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => Container(),
+                  errorWidget: (context, url, error) =>
+                      const Center(child: Icon(Icons.error_outline)),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      cook.foodName,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: kBlackColor.withAlpha(680),
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    cook.foodName,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
                     ),
-                    Row(
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height:3),
+                  Container(
+                    padding: const EdgeInsets.all(3),
+                    decoration: BoxDecoration(
+                      color: kLightGreyColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Expanded(flex: 4, child: Text('조리시간')),
-                        Expanded(flex: 5, child: Text('${cook.cookingTime}분')),
+                        Icon(
+                          Icons.access_time,
+                          size: 14,
+                          color: kDarkGreyColor,
+                        ),
+                        Text(
+                          '${cook.cookingTime}분',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: kDarkGreyColor,
+                          ),
+                        ),
                       ],
                     ),
-                    Row(
-                      children: [
-                        const Expanded(flex: 4, child: Text('난이도')),
-                        Expanded(flex: 5, child: Text(cook.difficulty)),
-                      ],
-                    )
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

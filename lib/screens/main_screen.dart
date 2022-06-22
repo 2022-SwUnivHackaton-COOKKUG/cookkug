@@ -56,12 +56,12 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(
             icon:
                 Icon(_currentIndex == 1 ? Icons.search : Icons.search_outlined),
-            label: '검색',
+            label: '레시피꾹',
           ),
           BottomNavigationBarItem(
             icon: Icon(
-                _currentIndex == 2 ? Icons.favorite : Icons.favorite_outline),
-            label: '꾹한음식',
+                _currentIndex == 2 ? Icons.add_box : Icons.add_box_outlined),
+            label: '공유하기',
           ),
           BottomNavigationBarItem(
             icon: Icon(_currentIndex == 3
@@ -72,7 +72,7 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(
             icon:
                 Icon(_currentIndex == 4 ? Icons.person : Icons.person_outline),
-            label: '마이페이지',
+            label: '나의쿡꾹',
           ),
         ],
       ),
