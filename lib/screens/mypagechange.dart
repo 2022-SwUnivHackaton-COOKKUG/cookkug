@@ -69,11 +69,11 @@ class _MyPageChangeState extends State<MyPageChange> {
     return userE;
   }
 
-  final nameController = new TextEditingController();
-  final passwordController = new TextEditingController();
-  final password1Controller = new TextEditingController();
-  final password2Controller = new TextEditingController();
-  final addressController = new TextEditingController();
+  final nameController = TextEditingController();
+  final passwordController = TextEditingController();
+  final password1Controller = TextEditingController();
+  final password2Controller = TextEditingController();
+  final addressController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -262,41 +262,37 @@ class _MyPageChangeState extends State<MyPageChange> {
                           const SizedBox(
                             height: 5.0,
                           ),
-                          Container(
-                            child: TextFormField(
-                                enabled: false,
-                                decoration: InputDecoration(
-                                    prefixIcon: const Icon(Icons.mail),
-                                    contentPadding:
-                                        const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                                    hintText: userE,
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10)))),
-                          ),
+                          TextFormField(
+                              enabled: false,
+                              decoration: InputDecoration(
+                                  prefixIcon: const Icon(Icons.mail),
+                                  contentPadding: const EdgeInsets.fromLTRB(
+                                      20, 15, 20, 15),
+                                  hintText: userE,
+                                  border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(10)))),
                           const SizedBox(
                             height: 10.0,
                           ),
-                          Container(
-                            child: TextFormField(
-                              autofocus: false,
-                              controller: passwordController,
-                              obscureText: true,
-                              validator: (value) {
-                                RegExp regex = new RegExp(r'^.{6,}$');
-                                if (!regex.hasMatch(value!)) {
-                                  return ("최소 6자리 이상의 비밀번호가 필요합니다.");
-                                }
-                              },
-                              textInputAction: TextInputAction.next,
-                              decoration: InputDecoration(
-                                  prefixIcon: const Icon(Icons.vpn_key),
-                                  contentPadding:
-                                      const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                                  hintText: "현재 비밀번호",
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10))),
-                            ),
+                          TextFormField(
+                            autofocus: false,
+                            controller: passwordController,
+                            obscureText: true,
+                            validator: (value) {
+                              RegExp regex = RegExp(r'^.{6,}$');
+                              if (!regex.hasMatch(value!)) {
+                                return ("최소 6자리 이상의 비밀번호가 필요합니다.");
+                              }
+                            },
+                            textInputAction: TextInputAction.next,
+                            decoration: InputDecoration(
+                                prefixIcon: const Icon(Icons.vpn_key),
+                                contentPadding:
+                                    const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                                hintText: "현재 비밀번호",
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10))),
                           ),
                           const SizedBox(
                             height: 10.0,
@@ -306,7 +302,7 @@ class _MyPageChangeState extends State<MyPageChange> {
                             controller: password1Controller,
                             obscureText: true,
                             validator: (value) {
-                              RegExp regex = new RegExp(r'^.{6,}$');
+                              RegExp regex = RegExp(r'^.{6,}$');
                               if (!regex.hasMatch(value!)) {
                                 return ("최소 6자리 이상의 비밀번호가 필요합니다.");
                               }
@@ -328,7 +324,7 @@ class _MyPageChangeState extends State<MyPageChange> {
                             controller: password2Controller,
                             obscureText: true,
                             validator: (value) {
-                              RegExp regex = new RegExp(r'^.{6,}$');
+                              RegExp regex = RegExp(r'^.{6,}$');
                               if (!regex.hasMatch(value!)) {
                                 return ("최소 6자리 이상의 비밀번호가 필요합니다.");
                               }
@@ -374,7 +370,8 @@ class _MyPageChangeState extends State<MyPageChange> {
                                                   fontSize: 18.0,
                                                   fontWeight: FontWeight.bold),
                                             ),
-                                            content: const SingleChildScrollView(
+                                            content:
+                                                const SingleChildScrollView(
                                               child: Text('새 비밀번호를 입력해주세요.'),
                                             ),
                                             actions: <Widget>[
@@ -411,7 +408,8 @@ class _MyPageChangeState extends State<MyPageChange> {
                                                   fontSize: 18.0,
                                                   fontWeight: FontWeight.bold),
                                             ),
-                                            content: const SingleChildScrollView(
+                                            content:
+                                                const SingleChildScrollView(
                                               child: Text('새 비밀번호가 일치하지 않습니다.'),
                                             ),
                                             actions: <Widget>[
@@ -448,7 +446,8 @@ class _MyPageChangeState extends State<MyPageChange> {
                                                   fontSize: 18.0,
                                                   fontWeight: FontWeight.bold),
                                             ),
-                                            content: const SingleChildScrollView(
+                                            content:
+                                                const SingleChildScrollView(
                                               child: Text('비밀번호가 변경되었습니다.'),
                                             ),
                                             actions: <Widget>[
@@ -490,7 +489,8 @@ class _MyPageChangeState extends State<MyPageChange> {
                                                   fontSize: 18.0,
                                                   fontWeight: FontWeight.bold),
                                             ),
-                                            content: const SingleChildScrollView(
+                                            content:
+                                                const SingleChildScrollView(
                                               child:
                                                   Text('현재 비밀번호가 일치하지 않습니다.'),
                                             ),

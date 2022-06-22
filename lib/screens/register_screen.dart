@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:searchfield/searchfield.dart';
 
 final _formKey = GlobalKey<FormState>();
 
@@ -48,7 +47,7 @@ class _SignUpState extends State<SignUp> {
     final CollectionReference _user =
         FirebaseFirestore.instance.collection('user');
 
-    _user.doc('${FirebaseAuth.instance.currentUser!.uid}').set({
+    _user.doc(FirebaseAuth.instance.currentUser!.uid).set({
       'email': eController.text,
       'name': nController.text,
       //'address': address2,
@@ -76,7 +75,7 @@ class _SignUpState extends State<SignUp> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                     child: Image.asset(
                       'assets/images/1.png',
                       height: 100,
@@ -84,8 +83,8 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.fromLTRB(40, 15, 40, 0),
-                    child: Text(
+                    padding: const EdgeInsets.fromLTRB(40, 15, 40, 0),
+                    child: const Text(
                       '회원정보입력',
                       style: TextStyle(
                         color: Color.fromARGB(255, 116, 111, 111),
@@ -96,7 +95,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(40, 20, 40, 0),
+                    margin: const EdgeInsets.fromLTRB(40, 20, 40, 0),
                     child: TextFormField(
                         controller: nController,
                         keyboardType: TextInputType.text,
@@ -111,14 +110,14 @@ class _SignUpState extends State<SignUp> {
                         },
                         textInputAction: TextInputAction.next,
                         decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.person),
-                            contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                            prefixIcon: const Icon(Icons.person),
+                            contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                             hintText: "이름",
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10)))),
                   ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(40, 20, 40, 0),
+                    margin: const EdgeInsets.fromLTRB(40, 20, 40, 0),
                     child: TextFormField(
                         controller: eController,
                         keyboardType: TextInputType.emailAddress,
@@ -134,19 +133,19 @@ class _SignUpState extends State<SignUp> {
                         },
                         textInputAction: TextInputAction.next,
                         decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.mail),
-                            contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                            prefixIcon: const Icon(Icons.mail),
+                            contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                             hintText: "이메일",
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10)))),
                   ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(40, 20, 40, 0),
+                    margin: const EdgeInsets.fromLTRB(40, 20, 40, 0),
                     child: TextFormField(
                       controller: p1Controller,
                       obscureText: true,
                       validator: (value) {
-                        RegExp regex = new RegExp(r'^.{6,}$');
+                        RegExp regex = RegExp(r'^.{6,}$');
                         if (!regex.hasMatch(value!)) {
                           return ("최소 6자리 이상의 비밀번호가 필요합니다.");
                         }
@@ -156,20 +155,19 @@ class _SignUpState extends State<SignUp> {
                       },
                       textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.vpn_key),
-                          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                          prefixIcon: const Icon(Icons.vpn_key),
+                          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                           hintText: "비밀번호",
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10))),
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(40, 20, 40, 0),
+                    margin: const EdgeInsets.fromLTRB(40, 20, 40, 0),
                     child: TextFormField(
                       controller: p2Controller,
                       obscureText: true,
                       validator: (value) {
-                        RegExp regex = new RegExp(r'^.{6,}$');
                         if ((p1Controller.text == '' &&
                                 p2Controller.text == '') ||
                             (p1Controller.text != p2Controller.text)) {
@@ -181,8 +179,8 @@ class _SignUpState extends State<SignUp> {
                       },
                       textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.vpn_key),
-                          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                          prefixIcon: const Icon(Icons.vpn_key),
+                          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                           hintText: "비밀번호 확인",
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10))),
@@ -192,18 +190,18 @@ class _SignUpState extends State<SignUp> {
               ),
             ),
             Container(
-              margin: EdgeInsets.fromLTRB(20, 200, 20, 0),
-              padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+              margin: const EdgeInsets.fromLTRB(20, 200, 20, 0),
+              padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    primary: Color.fromARGB(255, 255, 138, 0),
+                    primary: const Color.fromARGB(255, 255, 138, 0),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
-                    minimumSize: Size(500, 50)),
+                    minimumSize: const Size(500, 50)),
                 onPressed: () {
                   signUp(eController.text, p1Controller.text);
                 },
-                child: Text('회원가입하기',
+                child: const Text('회원가입하기',
                     style: TextStyle(
                         color: Colors.white,
                         letterSpacing: 2.0,

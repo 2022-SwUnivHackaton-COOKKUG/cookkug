@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'login_screen.dart';
 import 'mypagecheck.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -21,16 +20,16 @@ class _MyPageState extends State<MyPage> {
   String userN = "";
 
   Future<String> getUser() async {
-    final _user = FirebaseFirestore.instance
+    final user = FirebaseFirestore.instance
         .collection('user')
-        .doc('${FirebaseAuth.instance.currentUser!.uid}');
+        .doc(FirebaseAuth.instance.currentUser!.uid);
     // .collection('userinfo')
     // .doc('userinfo');
 
-    var _docSnapshot = await _user.get();
-    userE = _docSnapshot['email'];
+    var docSnapshot = await user.get();
+    userE = docSnapshot['email'];
     print(userE);
-    userN = _docSnapshot['name'];
+    userN = docSnapshot['name'];
     print(userN);
 
     return userE;
@@ -38,15 +37,14 @@ class _MyPageState extends State<MyPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: FutureBuilder(
+    return FutureBuilder(
       future: getUser(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         return Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
             title: Row(
-              children: [
+              children: const [
                 Text(
                   '나의',
                   style: TextStyle(
@@ -68,7 +66,7 @@ class _MyPageState extends State<MyPage> {
             backgroundColor: Colors.white, // 앱바의 배경 색
             elevation: 0.0, // 앱바 입체감
             leading: IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.arrow_back_ios_new,
                 color: Colors.black,
               ),
@@ -78,7 +76,7 @@ class _MyPageState extends State<MyPage> {
             ),
           ),
           body: Padding(
-            padding: EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -86,7 +84,7 @@ class _MyPageState extends State<MyPage> {
                   children: <Widget>[
                     InkWell(
                       borderRadius: BorderRadius.circular(8.0),
-                      child: ClipOval(
+                      child: const ClipOval(
                         child: Image(
                           image: AssetImage('assets/images/루피.jpg'),
                           width: 120.0,
@@ -102,45 +100,45 @@ class _MyPageState extends State<MyPage> {
                               return Padding(
                                 padding: const EdgeInsets.all(30.0),
                                 child: AlertDialog(
-                                  title: Text('프로필 이미지 설정',
+                                  title: const Text('프로필 이미지 설정',
                                       textAlign: TextAlign.center),
                                   actions: <Widget>[
-                                    Divider(
+                                    const Divider(
                                       height: 0.0,
                                       color: Colors.orangeAccent,
                                       thickness: 1.5,
                                       endIndent: 0.0,
                                     ),
                                     ListTile(
-                                      title: Text('카메라',
+                                      title: const Text('카메라',
                                           textAlign: TextAlign.center),
                                       onTap: () {
                                         getImage(ImageSource.camera);
                                         Navigator.of(context).pop();
                                       },
                                     ),
-                                    Divider(
+                                    const Divider(
                                       height: 0.0,
                                       color: Colors.orangeAccent,
                                       thickness: 0.0,
                                       endIndent: 0.0,
                                     ),
                                     ListTile(
-                                      title: Text('갤러리',
+                                      title: const Text('갤러리',
                                           textAlign: TextAlign.center),
                                       onTap: () {
                                         getImage(ImageSource.gallery);
                                         Navigator.of(context).pop();
                                       },
                                     ),
-                                    Divider(
+                                    const Divider(
                                       height: 0.0,
                                       color: Colors.orangeAccent,
                                       thickness: 0.0,
                                       endIndent: 0.0,
                                     ),
                                     ListTile(
-                                      title: Text('취소',
+                                      title: const Text('취소',
                                           textAlign: TextAlign.center),
                                       onTap: () {
                                         Navigator.of(context).pop();
@@ -153,59 +151,59 @@ class _MyPageState extends State<MyPage> {
                       },
                     ),
                     OutlinedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MyPageCheck()));
-                    },
-                    child: Text(
-                      '프로필 편집',
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 255, 138, 0),
-                        letterSpacing: 2.0,
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const MyPageCheck()));
+                        },
+                        child: const Text(
+                          '프로필 편집',
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 255, 138, 0),
+                            letterSpacing: 2.0,
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )),
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
+                  padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
                   child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(userN,
-                              style: TextStyle(
-                                color: Colors.black,
-                                letterSpacing: 2.0,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold,
-                              )),
-                          Text(
-                            "자기소개를 작성하시오.",
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 116, 111, 111),
-                              letterSpacing: 2.0,
-                              fontSize: 15.0, // 넘는거 어켕할거임
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(userN,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            letterSpacing: 2.0,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                          )),
+                      const Text(
+                        "자기소개를 작성하시오.",
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 116, 111, 111),
+                          letterSpacing: 2.0,
+                          fontSize: 15.0, // 넘는거 어켕할거임
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
+                    ],
+                  ),
                 ),
-                Divider(
+                const Divider(
                   height: 60.0,
                   color: Colors.orangeAccent,
                   thickness: 1.5,
                   endIndent: 5.0,
                 ),
                 ListTile(
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.replay,
                     color: Colors.black,
                   ),
-                  title: Text(
+                  title: const Text(
                     '기록',
                     style: TextStyle(
                       letterSpacing: 2.0,
@@ -218,11 +216,11 @@ class _MyPageState extends State<MyPage> {
                   },
                 ),
                 ListTile(
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.person,
                     color: Colors.black,
                   ),
-                  title: Text(
+                  title: const Text(
                     '친구',
                     style: TextStyle(
                       letterSpacing: 2.0,
@@ -239,13 +237,13 @@ class _MyPageState extends State<MyPage> {
           ),
         );
       },
-    ));
+    );
   }
 
   Future getImage(ImageSource imageSource) async {
     XFile? ximage = await ImagePicker().pickImage(source: imageSource);
-    File image = File(ximage!.path);
-    if (image == null) return;
+    if (ximage == null) return;
+    File image = File(ximage.path);
     setState(() {
       _image = image;
     });
