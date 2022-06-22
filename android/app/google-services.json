@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "97651949947",
+    "project_id": "cookkug-ce6c5",
+    "storage_bucket": "cookkug-ce6c5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:97651949947:android:8cedd88ea369a398923dde",
+        "android_client_info": {
+          "package_name": "com.swhackathon.cookkug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "97651949947-5is4vvu7c1299bpbqdsmua6ej8lrtu7s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAYxzwNFnv20PN3oIhEODmU5C1po0joyI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "97651949947-5is4vvu7c1299bpbqdsmua6ej8lrtu7s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
