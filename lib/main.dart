@@ -1,3 +1,5 @@
+import 'package:cookkug/controllers/cook_controller.dart';
+import 'package:cookkug/controllers/cookkug_user_controller.dart';
 import 'package:cookkug/screens/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +25,9 @@ class MyApp extends StatelessWidget {
       title: 'COOKKUG',
       theme: ThemeData(),
       home: LoginScreen(),
+      initialBinding: BindingsBuilder((){
+        Get.put(CookkugUserController());
+      }),
     );
   }
 }

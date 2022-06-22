@@ -1,21 +1,21 @@
 import 'package:json_annotation/json_annotation.dart';
-part 'user.g.dart';
+part 'cookkugUser.g.dart';
 
 @JsonSerializable()
-class User {
+class CookkugUser {
   final String uid;
   final String name; //정렬할때 고려하기위한 데이터
   final String email;
   final List friends;
 
 
-  User({
+  CookkugUser({
     required this.uid,
     required this.name,
     required this.email,
     required this.friends,
   });
 
-  factory User.fromJson(json) => _$UserFromJson(json);
-  Map<String, dynamic> toJson() => _$UserToJson(this);
+  factory CookkugUser.fromJson(json) => _$CookkugUserFromJson(json);
+  Map<String, dynamic> toJson() => _$CookkugUserToJson(this);
 }

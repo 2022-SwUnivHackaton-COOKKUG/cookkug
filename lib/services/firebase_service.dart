@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cookkug/controllers/cookkug_user_controller.dart';
+import 'package:cookkug/models/user/cookkugUser.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -34,7 +36,7 @@ class FirebaseService {
     }
   }
 
-  Future<bool> registerWithGoogleSignIn() async {
+  Future<bool> signInWithGoogle() async {
     final googleSign = GoogleSignIn();
     final googleUser = await googleSign.signIn();
     if (googleUser == null) return false;
@@ -47,21 +49,50 @@ class FirebaseService {
     try {
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
-      if (userCredential.user == null) return false;
-      _firestore.collection('user').doc(userCredential.user!.uid).set({
-        'email': userCredential.user!.email,
-        'name': '',
-        'uid': userCredential.user!.uid,
-        'friends': [],
-      });
-      return true;
+      return await settingUpUser(userCredential);
     } catch (e) {
       Fluttertoast.showToast(msg: e.toString());
     }
     return false;
   }
 
-  Future<bool> loginUser() async {
-    return false;
+  Future<bool> signInWithEmailAndPassword(
+      {required String email, required String password}) async {
+    UserCredential userCredential = await _firebaseAuth
+        .signInWithEmailAndPassword(email: email, password: password);
+
+    return await settingUpUser(userCredential);
+  }
+
+  Future<bool> settingUpUser(UserCredential userCredential) async {
+    try {
+      if (userCredential.user == null) return false;
+
+      QuerySnapshot result = await _firestore
+          .collection('user')
+          .where('uid', isEqualTo: userCredential.user!.uid)
+          .get();
+
+      if (result.docs.isEmpty) {
+        CookkugUser user = CookkugUser(
+          email: userCredential.user!.email!,
+          name: '홍길동',
+          uid: userCredential.user!.uid,
+          friends: [],
+        );
+        _firestore
+            .collection('user')
+            .doc(userCredential.user!.uid)
+            .set(user.toJson());
+
+        CookkugUserController.to.signIn(user);
+        return true;
+      }
+      CookkugUser user = CookkugUser.fromJson(result.docs[0].data());
+      CookkugUserController.to.signIn(user);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }

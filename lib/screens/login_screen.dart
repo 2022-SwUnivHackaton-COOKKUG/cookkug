@@ -19,16 +19,29 @@ class LoginScreen extends StatelessWidget {
   void signIn(String email, String password, BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       try {
-        await _auth
-            .signInWithEmailAndPassword(email: email, password: password)
-            .then((value) {
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => const MainScreen()),
-              (route) => false);
-        });
+        var navigator = Navigator.of(context);
+        bool result = await FirebaseService()
+            .signInWithEmailAndPassword(email: email, password: password);
+        if (result) {
+          navigator.pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const MainScreen()),
+            (route) => false,
+          );
+        }
       } catch (e) {
         Fluttertoast.showToast(msg: e.toString());
       }
+    }
+  }
+
+  void googleSignIn(BuildContext context) async {
+    var navigator = Navigator.of(context);
+    bool result = await FirebaseService().signInWithGoogle();
+    if (result) {
+      navigator.pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const MainScreen()),
+        (route) => false,
+      );
     }
   }
 
@@ -164,16 +177,5 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void googleSignIn(BuildContext context) async {
-    var navigator = Navigator.of(context);
-    bool result = await FirebaseService().registerWithGoogleSignIn();
-    if (result) {
-      navigator.pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => const MainScreen()),
-        (route) => false,
-      );
-    }
   }
 }

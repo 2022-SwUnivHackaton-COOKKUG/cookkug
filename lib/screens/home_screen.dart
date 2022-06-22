@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cookkug/controllers/cookkug_user_controller.dart';
 
 import '../constants.dart';
 import '../controllers/cook_controller.dart';
@@ -11,6 +12,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(CookkugUserController.to.user!.uid);
     return Scaffold(
       backgroundColor: kWhiteColor,
       appBar: AppBar(

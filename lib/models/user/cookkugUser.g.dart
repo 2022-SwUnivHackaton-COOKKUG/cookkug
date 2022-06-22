@@ -1,19 +1,20 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user.dart';
+part of 'cookkugUser.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-User _$UserFromJson(Map<String, dynamic> json) => User(
+CookkugUser _$CookkugUserFromJson(Map<String, dynamic> json) => CookkugUser(
       uid: json['uid'] as String,
       name: json['name'] as String,
       email: json['email'] as String,
       friends: json['friends'] as List<dynamic>,
     );
 
-Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
+Map<String, dynamic> _$CookkugUserToJson(CookkugUser instance) =>
+    <String, dynamic>{
       'uid': instance.uid,
       'name': instance.name,
       'email': instance.email,
