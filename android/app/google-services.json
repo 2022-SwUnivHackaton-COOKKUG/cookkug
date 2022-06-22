@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:97651949947:android:8cedd88ea369a398923dde",
+        "mobilesdk_app_id": "1:97651949947:android:c1f649f5e0ab709a923dde",
         "android_client_info": {
-          "package_name": "com.swhackathon.cookkug"
+          "package_name": "com.asy100.searchpage"
         }
       },
       "oauth_client": [
@@ -29,6 +29,93 @@
             {
               "client_id": "97651949947-5is4vvu7c1299bpbqdsmua6ej8lrtu7s.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "97651949947-df642opk6m5mpm6qvsaodu19lg9d7380.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.swhackathon.cookkug"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:97651949947:android:18795fd2b28e3f3f923dde",
+        "android_client_info": {
+          "package_name": "com.example.cookkug_1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "97651949947-5is4vvu7c1299bpbqdsmua6ej8lrtu7s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAYxzwNFnv20PN3oIhEODmU5C1po0joyI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "97651949947-5is4vvu7c1299bpbqdsmua6ej8lrtu7s.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "97651949947-df642opk6m5mpm6qvsaodu19lg9d7380.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.swhackathon.cookkug"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:97651949947:android:8cedd88ea369a398923dde",
+        "android_client_info": {
+          "package_name": "com.swhackathon.cookkug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "97651949947-5a327gjk9cacsag93j158qqf1odumhn9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.swhackathon.cookkug",
+            "certificate_hash": "ac50f6f1e2d26ea3813854c854390ef8b516a0aa"
+          }
+        },
+        {
+          "client_id": "97651949947-5is4vvu7c1299bpbqdsmua6ej8lrtu7s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAYxzwNFnv20PN3oIhEODmU5C1po0joyI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "97651949947-5is4vvu7c1299bpbqdsmua6ej8lrtu7s.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "97651949947-df642opk6m5mpm6qvsaodu19lg9d7380.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.swhackathon.cookkug"
+              }
             }
           ]
         }

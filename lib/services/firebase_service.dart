@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cookkug/controllers/cookkug_user_controller.dart';
 import 'package:cookkug/models/user/cookkugUser.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -25,6 +24,7 @@ class FirebaseService {
           .createUserWithEmailAndPassword(email: email, password: password);
       if (userCredential.user == null) return false;
       _firestore.collection('user').doc(userCredential.user!.uid).set({
+        'image':'',
         'email': email,
         'name': password,
         'uid': userCredential.user!.uid,
@@ -75,6 +75,7 @@ class FirebaseService {
 
       if (result.docs.isEmpty) {
         CookkugUser user = CookkugUser(
+          image: '',
           email: userCredential.user!.email!,
           name: '홍길동',
           uid: userCredential.user!.uid,
@@ -94,5 +95,14 @@ class FirebaseService {
     } catch (e) {
       return false;
     }
+  }
+
+  Future<List> getUserList()async{
+    QuerySnapshot userList = await _firestore
+        .collection('user')
+        .get();
+    return userList.docs.map((e){
+      return e.data();
+    }).toList();
   }
 }

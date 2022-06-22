@@ -12,7 +12,7 @@ class ChatScreen extends StatelessWidget {
         backgroundColor: kWhiteColor,
         foregroundColor: kBlackColor,
         elevation: 0,
-        title: Text('채팅'),
+        title: const Text('채팅'),
       ),
       body: ListView(
         children: [

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cookkug/controllers/cookkug_user_controller.dart';
+import 'package:cookkug/screens/user_list_screen.dart';
 
 import '../constants.dart';
 import '../controllers/cook_controller.dart';
@@ -31,7 +32,11 @@ class HomeScreen extends StatelessWidget {
             icon: Icon(Icons.search, color: kMainColor),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return UserListScreen();
+              }));
+            },
             icon: Icon(Icons.notifications, color: kMainColor),
           ),
         ],
@@ -112,11 +117,11 @@ Widget recommendedCookArea(BuildContext context) {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5),
           child: Text(
-            '안선영님을 위한 초스피드 레시피',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            '${CookkugUserController.to.user != null ? (CookkugUserController.to.user!.name != '' ? CookkugUserController.to.user!.name : '홍길동') : '홍길동'}님을 위한 초스피드 레시피',
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
         ),
         const SizedBox(height: 10),
