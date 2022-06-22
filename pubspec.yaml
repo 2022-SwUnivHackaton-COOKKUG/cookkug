@@ -19,10 +19,20 @@ dependencies:
   cached_network_image: ^3.2.1
   # 상태관리 라이브러리
   get: ^4.6.5
+  # SVG 라이브러리
+  flutter_svg: ^1.1.0
   # Firebase관련 라이브러리
   firebase_core: ^1.18.0
   cloud_firestore: ^3.1.18
   firebase_auth: ^3.3.20
+  # Toast 라이브러리
+  fluttertoast: ^8.0.9
+  # Search 라이브러리
+  searchfield: ^0.6.6
+  # GoogleSignIn 라이브러리
+  google_sign_in: ^5.3.3
+  # 이미지선택 라이브러리
+  image_picker: ^0.8.5+3
 
 dev_dependencies:
   flutter_test:
@@ -40,6 +50,7 @@ flutter:
   assets:
     - assets/images/
     - assets/logo/
+    - assets/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
