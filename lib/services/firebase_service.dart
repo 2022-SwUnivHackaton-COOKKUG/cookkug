@@ -56,6 +56,13 @@ class FirebaseService {
         .snapshots();
   }
 
+  Future<String> getUserImage(String uid)async{
+    DocumentSnapshot<Map<String, dynamic>> userData =
+    await _firestore.collection('user').doc(uid).get();
+    Map<String,dynamic> user = userData.data() as Map<String,dynamic>;
+    return user['image'];
+  }
+
   Future<bool> registerWithEmailAndPassword(
       {required String email, required String password}) async {
     try {

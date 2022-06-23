@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cookkug/constants.dart';
 import 'package:cookkug/controllers/user_controller.dart';
 import 'package:cookkug/models/chat/chat.dart';
 import 'package:cookkug/models/chatRoom/chatRoom.dart';
@@ -20,6 +22,23 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   final ScrollController _scrollController = ScrollController(
     initialScrollOffset: 0,
   );
+
+  void sendMessage(String chatRoomId) async {
+    if (_messageController.text.isEmpty) return;
+    if (_messageController.text.replaceAll(' ', '') == '') return;
+    await FirebaseService().sendMessageInChatRoom(
+      chatRoomId: chatRoomId,
+      message: _messageController.text,
+    );
+
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
+    _messageController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -28,13 +47,60 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
           if (snapshot.hasData) {
             ChatRoom chatRoom = snapshot.data as ChatRoom;
             return Scaffold(
-              backgroundColor: const Color(0xFF26253A),
+              backgroundColor: kWhiteColor,
               appBar: AppBar(
-                backgroundColor: const Color(0xFF26253A),
-                foregroundColor: Colors.white,
+                backgroundColor: kWhiteColor,
+                foregroundColor: kBlackColor,
                 elevation: 0,
-                title: Text(chatRoom.userList.firstWhere((element) =>
-                    element['id'] != UserController.to.user!.uid)['name']),
+                centerTitle: false,
+                automaticallyImplyLeading: false,
+                title: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    InkWell(
+                      onTap: () => Navigator.pop(context),
+                      child: Icon(Icons.arrow_back_ios),
+                    ),
+                    FutureBuilder(
+                        future: FirebaseService().getUserImage(
+                            chatRoom.userIdList.firstWhere((element) =>
+                                element != UserController.to.user!.uid)),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            String imageUrl = snapshot.data as String;
+                            if (imageUrl != '') {
+                              return ClipRRect(
+                                borderRadius: BorderRadius.circular(25),
+                                child: SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: CachedNetworkImage(
+                                    imageUrl: imageUrl,
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) => Container(),
+                                    errorWidget: (context, url, error) =>
+                                        const Center(
+                                            child: Icon(Icons.error_outline)),
+                                  ),
+                                ),
+                              );
+                            }
+                          }
+                          return Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25),
+                              border: Border.all(color: kBlackColor),
+                              color: kWhiteColor,
+                            ),
+                          );
+                        }),
+                    const SizedBox(width: 20),
+                    Text(chatRoom.userList.firstWhere((element) =>
+                        element['id'] != UserController.to.user!.uid)['name']),
+                  ],
+                ),
               ),
               body: StreamBuilder(
                 stream:
@@ -72,27 +138,15 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                         Container(
                                           padding: const EdgeInsets.all(10),
                                           decoration: BoxDecoration(
-                                            color: const Color(0xFF29343E),
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: const Radius.circular(5),
-                                              topRight:
-                                                  const Radius.circular(5),
-                                              bottomLeft: chat.senderId ==
-                                                      UserController
-                                                          .to.user!.uid
-                                                  ? const Radius.circular(5)
-                                                  : const Radius.circular(0),
-                                              bottomRight: chat.senderId ==
-                                                      UserController
-                                                          .to.user!.uid
-                                                  ? const Radius.circular(0)
-                                                  : const Radius.circular(5),
-                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            border: Border.all(
+                                                color: kDarkGreyColor),
                                           ),
                                           child: Text(
                                             chat.message,
-                                            style: const TextStyle(
-                                              color: Colors.white,
+                                            style: TextStyle(
+                                              color: kBlackColor,
                                             ),
                                           ),
                                         ),
@@ -114,80 +168,63 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                               ),
                             ),
                           ),
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                width: double.infinity,
-                                padding: EdgeInsets.only(
-                                  left: 16,
-                                  right: 16,
-                                  top: 8,
-                                  bottom: MediaQuery.of(context)
-                                          .viewPadding
-                                          .bottom +
-                                      8,
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: const Color(0xFF212031),
-                                ),
-                                child: Row(
-                                  children: [
-                                    const SizedBox(width: 10),
-                                    Expanded(
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10),
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xFF2B2A3A),
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                        child: TextField(
-                                          decoration: const InputDecoration(
-                                            border: InputBorder.none,
-                                            hintText: 'Send Message',
-                                            hintStyle: TextStyle(
-                                              color: Color(0xFF71707F),
-                                            ),
-                                          ),
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                          ),
-                                          controller: _messageController,
-                                        ),
-                                      ),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.only(
+                              left: 10,
+                              right: 10,
+                              top: 10,
+                              bottom:
+                                  MediaQuery.of(context).viewPadding.bottom +
+                                      10,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: kWhiteColor,
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    decoration: BoxDecoration(
+                                      color: kWhiteColor,
+                                      borderRadius: BorderRadius.circular(30),
+                                      border: Border.all(color: kGreyColor),
                                     ),
-                                    InkWell(
-                                      onTap: () async {
-                                        await FirebaseService()
-                                            .sendMessageInChatRoom(
-                                          chatRoomId: chatRoom.id,
-                                          message: _messageController.text,
-                                        );
-
-                                        _scrollController.animateTo(
-                                          _scrollController
-                                              .position.maxScrollExtent,
-                                          duration:
-                                              const Duration(milliseconds: 300),
-                                          curve: Curves.easeOut,
-                                        );
-                                        _messageController.clear();
+                                    child: TextField(
+                                      controller: _messageController,
+                                      decoration: InputDecoration(
+                                        icon: Container(
+                                          alignment: Alignment.center,
+                                          width: 30,
+                                          height: 30,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            border:
+                                                Border.all(color: kMainColor),
+                                          ),
+                                          child: Icon(
+                                            Icons.add,
+                                            color: kMainColor,
+                                          ),
+                                        ),
+                                        border: InputBorder.none,
+                                      ),
+                                      onSubmitted: (value){
+                                        sendMessage(chatRoom.id);
                                       },
-                                      child: Container(
-                                        padding: const EdgeInsets.only(left: 8),
-                                        child: const Icon(
-                                          Icons.near_me,
-                                          color: Color(0xFF71707F),
-                                        ),
+                                      style:  TextStyle(
+                                        color: kBlackColor,
+                                        fontSize: 18,
                                       ),
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ],
                       ),
