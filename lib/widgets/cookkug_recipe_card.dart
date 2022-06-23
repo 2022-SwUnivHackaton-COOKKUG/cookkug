@@ -1,9 +1,6 @@
-import 'package:cookkug/models/cookkugRecipe/cookkugRecipe.dart';
 import 'package:cookkug/models/recipe/recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../constants.dart';
-import '../models/cook/cook.dart';
 
 class CookkugRecipeCard extends StatelessWidget {
   final Recipe recipe;

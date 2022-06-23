@@ -168,7 +168,7 @@ class FirebaseService {
     //2. update를 하는데 receiver,user 둘다 업데이트해준다
     try {
       for (var chatroom in UserController.to.user!.chatRoomList ?? []) {
-        if (chatroom['userIdList'].contains(receiverId)) {
+        if (chatroom['userIdList']??[].contains(receiverId)) {
           return chatroom['id'];
         }
       }
@@ -275,7 +275,7 @@ class FirebaseService {
         authorName: UserController.to.user!.name,
         image: imageUrl,
         recipeName: recipeName,
-        cookingTime: cookingTime,
+        cookingTime: '$cookingTime분 이내',
         recipeCategory: recipeCategory,
         ingredientList: ingredientList,
         cookingOrder: cookingOrder,
