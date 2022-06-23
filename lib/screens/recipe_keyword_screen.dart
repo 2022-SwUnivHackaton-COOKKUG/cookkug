@@ -3,10 +3,10 @@ import 'package:cookkug/models/recipe/recipe.dart';
 import 'package:cookkug/widgets/recipe_card.dart';
 import 'package:flutter/material.dart';
 
-class RecipeKeyworkScreen extends StatelessWidget {
+class RecipeKeywordScreen extends StatelessWidget {
   final String keyword;
   final List<Recipe> recipeList;
-  const RecipeKeyworkScreen(
+  const RecipeKeywordScreen(
       {Key? key, required this.keyword, required this.recipeList})
       : super(key: key);
 
