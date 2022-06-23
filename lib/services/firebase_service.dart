@@ -271,6 +271,8 @@ class FirebaseService {
       String recipeId = const Uuid().v4();
       await _firestore.collection('recipe').doc(recipeId).set(Recipe(
         id: recipeId,
+        authorId: UserController.to.user!.uid,
+        authorName: UserController.to.user!.name,
         image: imageUrl,
         recipeName: recipeName,
         cookingTime: cookingTime,
@@ -284,5 +286,13 @@ class FirebaseService {
       return false;
     }
 
+  }
+
+  Future<List<Recipe>> getRecipeList()async{
+    QuerySnapshot recipeList =  await _firestore.collection('recipe').get();
+    List<QueryDocumentSnapshot<Object?>> recipeListDocs = recipeList.docs;
+    return recipeListDocs.map((e){
+      return Recipe.fromJson(e.data());
+    }).toList();
   }
 }

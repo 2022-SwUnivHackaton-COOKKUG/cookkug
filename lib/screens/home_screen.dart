@@ -1,7 +1,11 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cookkug/controllers/user_controller.dart';
 import 'package:cookkug/models/cookkugRecipe/cookkugRecipe.dart';
+import 'package:cookkug/models/recipe/recipe.dart';
 import 'package:cookkug/screens/user_list_screen.dart';
+import 'package:cookkug/services/firebase_service.dart';
 import 'package:cookkug/widgets/cookkug_recipe_card.dart';
 
 import '../constants.dart';
@@ -97,6 +101,15 @@ Widget kRecipeRecommendedArea(BuildContext context) {
 }
 
 Widget kNavigateToRecipeArea(BuildContext context) {
+  Random rnd = Random();
+  List<int> randomList = [];
+  for(int i =0;i<3;i++){
+    int value = rnd.nextInt(16);
+    while(randomList.contains(value)){
+      value = rnd.nextInt(16);
+    }
+    randomList.add(value);
+  }
   return Container(
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
@@ -127,9 +140,9 @@ Widget kNavigateToRecipeArea(BuildContext context) {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            kRecipeButton(context, text: '간단한'),
-            kRecipeButton(context, text: '특별한'),
-            kRecipeButton(context, text: '건강한'),
+            kRecipeButton(context, text: kKeyworkList[randomList[0]][0]),
+            kRecipeButton(context, text: kKeyworkList[randomList[1]][0]),
+            kRecipeButton(context, text: kKeyworkList[randomList[2]][0]),
           ],
         ),
       ],
@@ -167,53 +180,65 @@ Widget kRecipeButton(BuildContext context, {required String text}) {
 }
 
 Widget kFriendCookArea(BuildContext context) {
-  return Padding(
-    padding: const EdgeInsets.all(16),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          width: 60,
-          height: 40,
-          child: Image.asset(
-            'assets/logo/character_logo.png',
-            fit: BoxFit.fitWidth,
-          ),
-        ),
-        Row(
-          children: [
-            const SizedBox(width: 5),
-            Text(
-              '친구의 레시피',
-              style: TextStyle(
-                color: kMainColor,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+  return FutureBuilder(
+      future: FirebaseService().getRecipeList(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<Recipe> recipeList = snapshot.data as List<Recipe>;
+          if(recipeList.isEmpty) return Container();
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 60,
+                      height: 40,
+                      child: Image.asset(
+                        'assets/logo/character_logo.png',
+                        fit: BoxFit.fitWidth,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        const SizedBox(width: 5),
+                        Text(
+                          '친구의 레시피',
+                          style: TextStyle(
+                            color: kMainColor,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const Text(
+                          ' 엿보기',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: recipeList.map((Recipe recipe) {
+                      return CookkugRecipeCard(recipe: recipe);
+                    }).toList(),
+                  ),
+                ),
+              ],
             ),
-            const Text(
-              ' 엿보기',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 10),
-        //TODO FutureBuilder로 서버로부터 데이터를 받아오면 그걸 여기서 변환해주는방식
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: CookController.to.cookkugRecipeList
-                .map((CookkugRecipe cookkugRecipe) {
-              return CookkugRecipeCard(cookkugRecipe: cookkugRecipe);
-            }).toList(),
-          ),
-        ),
-      ],
-    ),
-  );
+          );
+        }
+        return Container();
+      });
 }
 
 Widget kRecentlyCookArea(BuildContext context) {
@@ -247,8 +272,7 @@ Widget kRecentlyCookArea(BuildContext context) {
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: CookController.to.recommendCookList
-                .map((Cook cook) {
+            children: CookController.to.recommendCookList.map((Cook cook) {
               return CookingCard(cook: cook);
             }).toList(),
           ),

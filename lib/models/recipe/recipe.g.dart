@@ -8,6 +8,8 @@ part of 'recipe.dart';
 
 Recipe _$RecipeFromJson(Map<String, dynamic> json) => Recipe(
       id: json['id'] as String,
+      authorId: json['authorId'] as String,
+      authorName: json['authorName'] as String,
       image: json['image'] as List<dynamic>,
       recipeName: json['recipeName'] as String,
       cookingTime: json['cookingTime'] as String,
@@ -18,6 +20,8 @@ Recipe _$RecipeFromJson(Map<String, dynamic> json) => Recipe(
 
 Map<String, dynamic> _$RecipeToJson(Recipe instance) => <String, dynamic>{
       'id': instance.id,
+      'authorId': instance.authorId,
+      'authorName': instance.authorName,
       'image': instance.image,
       'recipeName': instance.recipeName,
       'cookingTime': instance.cookingTime,

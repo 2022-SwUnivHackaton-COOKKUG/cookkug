@@ -1,12 +1,13 @@
 import 'package:cookkug/models/cookkugRecipe/cookkugRecipe.dart';
+import 'package:cookkug/models/recipe/recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../constants.dart';
 import '../models/cook/cook.dart';
 
 class CookkugRecipeCard extends StatelessWidget {
-  final CookkugRecipe cookkugRecipe;
-  const CookkugRecipeCard({Key? key, required this.cookkugRecipe})
+  final Recipe recipe;
+  const CookkugRecipeCard({Key? key, required this.recipe})
       : super(key: key);
 
   @override
@@ -28,7 +29,7 @@ class CookkugRecipeCard extends StatelessWidget {
                   width: 120,
                   height: 120,
                   child: CachedNetworkImage(
-                    imageUrl: cookkugRecipe.image,
+                    imageUrl: recipe.image[0],
                     fit: BoxFit.cover,
                     placeholder: (context, url) => Container(),
                     errorWidget: (context, url, error) =>
@@ -43,7 +44,7 @@ class CookkugRecipeCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    cookkugRecipe.authorName,
+                    recipe.authorName,
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -52,7 +53,7 @@ class CookkugRecipeCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 3),
                   Text(
-                    cookkugRecipe.foodName,
+                    recipe.recipeName,
                     style: TextStyle(
                       fontSize: 12,
                     ),

@@ -4,6 +4,8 @@ part 'recipe.g.dart';
 @JsonSerializable()
 class Recipe {
   final String id;
+  final String authorId;
+  final String authorName;
   final List image;
   final String recipeName;
   final String cookingTime;
@@ -13,6 +15,8 @@ class Recipe {
 
   Recipe({
     required this.id,
+    required this.authorId,
+    required this.authorName,
     required this.image,
     required this.recipeName,
     required this.cookingTime,

@@ -267,6 +267,9 @@ class _RecipeUploadScreenState extends State<RecipeUploadScreen> {
                     onTap: () {
                       needIngredientList.add(_ingridientController.text);
                       _ingridientController.clear();
+                      setState(() {
+
+                      });
                     },
                     child: Text(
                       '+',
@@ -279,6 +282,9 @@ class _RecipeUploadScreenState extends State<RecipeUploadScreen> {
                   onSubmitted: (value) {
                     needIngredientList.add(value);
                     _ingridientController.clear();
+                    setState(() {
+
+                    });
                   },
                 ),
                 const SizedBox(height: 10),
@@ -361,6 +367,9 @@ class _RecipeUploadScreenState extends State<RecipeUploadScreen> {
                           onTap: () {
                             cookingOrder.add(_orderController.text);
                             _orderController.clear();
+                            setState(() {
+
+                            });
                           },
                           child: Text(
                             '+',
@@ -373,6 +382,9 @@ class _RecipeUploadScreenState extends State<RecipeUploadScreen> {
                         onSubmitted: (value) {
                           cookingOrder.add(value);
                           _orderController.clear();
+                          setState(() {
+
+                          });
                         },
                       ),
                     ),
