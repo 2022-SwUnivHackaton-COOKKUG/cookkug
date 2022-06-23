@@ -29,6 +29,7 @@ class FirebaseService {
         'name': password,
         'uid': userCredential.user!.uid,
         'friends': [],
+        'chatRoomList':[],
       });
       return true;
     } catch (e) {
@@ -81,17 +82,18 @@ class FirebaseService {
           name: '홍길동',
           uid: userCredential.user!.uid,
           friends: [],
+          chatRoomList: [],
         );
         _firestore
             .collection('user')
             .doc(userCredential.user!.uid)
             .set(user.toJson());
 
-        CookkugUserController.to.signIn(user);
+        UserController.to.signIn(user);
         return true;
       }
       mUser.User user = mUser.User.fromJson(result.docs[0].data());
-      CookkugUserController.to.signIn(user);
+      UserController.to.signIn(user);
       return true;
     } catch (e) {
       print(e);
@@ -104,5 +106,86 @@ class FirebaseService {
     return userList.docs.map((e) {
       return e.data();
     }).toList();
+  }
+
+  Future<String?> chatWithUser({
+    required String receiverId,
+    required String receiverName,
+  }) async {
+    //1. chat을 만든다
+    //2. update를 하는데 receiver,user 둘다 업데이트해준다
+    try {
+      for (var chatroom in UserController.to.user!.chatRoomList) {
+        if (chatroom['userIdList'].contains(receiverId)) {
+          return chatroom['id'];
+        }
+      }
+      String timeStamp = DateTime.now().toString();
+      DocumentReference<Map<String, dynamic>> chatData =
+      await _firestore.collection('chatroom').add({
+        'userIdList': [UserController.to.user!.uid, receiverId],
+        'userList': [
+          {
+            'id': UserController.to.user!.uid,
+            'name': UserController.to.user!.name,
+          },
+          {
+            'id': receiverId,
+            'name': receiverName,
+          },
+        ],
+        'timeStamp': timeStamp,
+        'lastMessage': '',
+        'lastMessageTimeStamp': timeStamp,
+      });
+      await _firestore
+          .collection('user')
+          .doc(UserController.to.user!.uid)
+          .update({
+        'chatRoomList': [
+          ...UserController.to.user!.chatRoomList,
+          {
+            'id': chatData.id,
+            'userIdList': [UserController.to.user!.uid, receiverId],
+          }
+        ]
+      });
+      DocumentSnapshot<Map<String, dynamic>> receiverData =
+      await _firestore.collection('user').doc(receiverId).get();
+
+      await _firestore.collection('user').doc(receiverId).update({
+        'chatRoomList': [
+          ...receiverData.data()!['chatRoomList'],
+          {
+            'id': chatData.id,
+            'userList': [UserController.to.user!.uid, receiverId],
+          }
+        ]
+      });
+      return chatData.id;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future<void> sendMessageInChatRoom({
+    required String chatRoomId,
+    required String message,
+  }) async {
+    String timeStamp = DateTime.now().toString();
+    await _firestore.collection('chatroom').doc(chatRoomId).update({
+      'lastMessage': message,
+      'lastMessageTimeStamp': timeStamp,
+    });
+    await _firestore
+        .collection('chatroom')
+        .doc(chatRoomId)
+        .collection('chat')
+        .add({
+      'senderId': UserController.to.user!.uid,
+      'message': message,
+      'timeStamp': timeStamp,
+    });
   }
 }

@@ -8,7 +8,7 @@ class User {
   final String email;
   final String image;
   final List friends;
-
+  final List chatRoomList;
 
   User({
     required this.uid,
@@ -16,6 +16,7 @@ class User {
     required this.email,
     required this.image,
     required this.friends,
+    required this.chatRoomList,
   });
 
   factory User.fromJson(json) => _$UserFromJson(json);

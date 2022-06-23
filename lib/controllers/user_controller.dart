@@ -2,8 +2,8 @@ import 'package:cookkug/models/user/user.dart';
 import 'package:cookkug/services/firebase_service.dart';
 import 'package:get/get.dart';
 
-class CookkugUserController extends GetxController {
-  static CookkugUserController get to => Get.find();
+class UserController extends GetxController {
+  static UserController get to => Get.find();
   User? user;
 
   Future<void> signIn(User cookkugUser) async {

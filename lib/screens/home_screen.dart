@@ -13,7 +13,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(CookkugUserController.to.user!.uid);
+    print(UserController.to.user!.uid);
     return Scaffold(
       backgroundColor: kWhiteColor,
       appBar: AppBar(
@@ -120,7 +120,7 @@ Widget recommendedCookArea(BuildContext context) {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5),
           child: Text(
-            '${CookkugUserController.to.user != null ? (CookkugUserController.to.user!.name != '' ? CookkugUserController.to.user!.name : '홍길동') : '홍길동'}님을 위한 초스피드 레시피',
+            '${UserController.to.user != null ? (UserController.to.user!.name != '' ? UserController.to.user!.name : '홍길동') : '홍길동'}님을 위한 초스피드 레시피',
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
         ),

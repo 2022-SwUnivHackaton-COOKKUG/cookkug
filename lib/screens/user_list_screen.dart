@@ -16,7 +16,7 @@ class UserListScreen extends StatelessWidget {
         title: Text('유저 리스트'),
       ),
       body: FutureBuilder(
-        future: CookkugUserController.to.getUserList(),
+        future:UserController.to.getUserList(),
         builder: (context, snapshot) {
           print(snapshot.data);
           if (snapshot.hasData) {

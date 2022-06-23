@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(),
       home: LoginScreen(),
       initialBinding: BindingsBuilder(() {
-        Get.put(CookkugUserController());
+        Get.put(UserController());
       }),
     );
   }
