@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cookkug/controllers/cookkug_user_controller.dart';
-import 'package:cookkug/models/user/cookkugUser.dart';
+import 'package:cookkug/controllers/user_controller.dart';
+import 'package:cookkug/models/user/user.dart' as mUser;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -24,7 +24,7 @@ class FirebaseService {
           .createUserWithEmailAndPassword(email: email, password: password);
       if (userCredential.user == null) return false;
       _firestore.collection('user').doc(userCredential.user!.uid).set({
-        'image':'',
+        'image': '',
         'email': email,
         'name': password,
         'uid': userCredential.user!.uid,
@@ -37,20 +37,21 @@ class FirebaseService {
   }
 
   Future<bool> signInWithGoogle() async {
-    final googleSign = GoogleSignIn();
-    final googleUser = await googleSign.signIn();
-    if (googleUser == null) return false;
-
-    final googleAuth = await googleUser.authentication;
-
-    final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
-
     try {
+      final googleSign = GoogleSignIn();
+      final googleUser = await googleSign.signIn();
+      if (googleUser == null) return false;
+
+      final googleAuth = await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
       return await settingUpUser(userCredential);
     } catch (e) {
+      print(e);
       Fluttertoast.showToast(msg: e.toString());
     }
     return false;
@@ -74,7 +75,7 @@ class FirebaseService {
           .get();
 
       if (result.docs.isEmpty) {
-        CookkugUser user = CookkugUser(
+        mUser.User user = mUser.User(
           image: '',
           email: userCredential.user!.email!,
           name: '홍길동',
@@ -89,19 +90,18 @@ class FirebaseService {
         CookkugUserController.to.signIn(user);
         return true;
       }
-      CookkugUser user = CookkugUser.fromJson(result.docs[0].data());
+      mUser.User user = mUser.User.fromJson(result.docs[0].data());
       CookkugUserController.to.signIn(user);
       return true;
     } catch (e) {
+      print(e);
       return false;
     }
   }
 
-  Future<List> getUserList()async{
-    QuerySnapshot userList = await _firestore
-        .collection('user')
-        .get();
-    return userList.docs.map((e){
+  Future<List> getUserList() async {
+    QuerySnapshot userList = await _firestore.collection('user').get();
+    return userList.docs.map((e) {
       return e.data();
     }).toList();
   }

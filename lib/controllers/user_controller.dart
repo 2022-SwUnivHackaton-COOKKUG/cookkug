@@ -1,12 +1,12 @@
-import 'package:cookkug/models/user/cookkugUser.dart';
+import 'package:cookkug/models/user/user.dart';
 import 'package:cookkug/services/firebase_service.dart';
 import 'package:get/get.dart';
 
 class CookkugUserController extends GetxController {
   static CookkugUserController get to => Get.find();
-  CookkugUser? user;
+  User? user;
 
-  Future<void> signIn(CookkugUser cookkugUser) async {
+  Future<void> signIn(User cookkugUser) async {
     user = cookkugUser;
     update();
   }
@@ -16,10 +16,10 @@ class CookkugUserController extends GetxController {
     update();
   }
 
-  Future<List<CookkugUser>> getUserList() async {
+  Future<List<User>> getUserList() async {
     List userList = await FirebaseService().getUserList();
-    List<CookkugUser> cookkugUserList = userList.map((e) {
-      return CookkugUser.fromJson(e);
+    List<User> cookkugUserList = userList.map((e) {
+      return User.fromJson(e);
     }).toList();
     print('hello : $cookkugUserList');
     return cookkugUserList;

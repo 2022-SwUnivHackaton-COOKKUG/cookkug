@@ -1,8 +1,8 @@
 import 'package:cookkug/constants.dart';
-import 'package:cookkug/models/user/cookkugUser.dart';
+import 'package:cookkug/models/user/user.dart';
 import 'package:flutter/material.dart';
 
-import '../controllers/cookkug_user_controller.dart';
+import '../controllers/user_controller.dart';
 
 class UserListScreen extends StatelessWidget {
   const UserListScreen({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class UserListScreen extends StatelessWidget {
         builder: (context, snapshot) {
           print(snapshot.data);
           if (snapshot.hasData) {
-            List<CookkugUser> userList = snapshot.data! as List<CookkugUser>;
+            List<User> userList = snapshot.data! as List<User>;
             return ListView(
               children: userList.map((user){
                 return ListTile(

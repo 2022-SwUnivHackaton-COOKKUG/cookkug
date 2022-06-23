@@ -3,12 +3,14 @@ part 'cook.g.dart';
 
 @JsonSerializable()
 class Cook {
+  final int id;
   final String image;
   final String foodName;
   final int cookingTime;
   final String difficulty;
 
   Cook({
+    required this.id,
     required this.image,
     required this.foodName,
     required this.cookingTime,

@@ -37,6 +37,7 @@ class LoginScreen extends StatelessWidget {
   void googleSignIn(BuildContext context) async {
     var navigator = Navigator.of(context);
     bool result = await FirebaseService().signInWithGoogle();
+    print(result);
     if (result) {
       navigator.pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => const MainScreen()),

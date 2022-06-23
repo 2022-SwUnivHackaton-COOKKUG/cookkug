@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cookkug/controllers/cookkug_user_controller.dart';
+import 'package:cookkug/controllers/user_controller.dart';
 import 'package:cookkug/screens/user_list_screen.dart';
 
 import '../constants.dart';
