@@ -1,9 +1,11 @@
 import 'package:cookkug/screens/community_screen.dart';
 import 'package:cookkug/screens/recipe_upload_screen.dart';
+import 'package:cookkug/screens/select_like_recipe_screen.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../constants.dart';
 import '../controllers/cook_controller.dart';
+import '../controllers/local_controller.dart';
 import 'chat_screen.dart';
 import 'home_screen.dart';
 import 'package:flutter/material.dart';
@@ -23,10 +25,21 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     Get.put(CookController());
+    checkSelectedRecipe();
   }
 
+  void checkSelectedRecipe()async{
+    final navigator = Navigator.of(context);
+    List<String>? idList = await LocalController().getRecipeListId();
+    if(idList==null||idList.isEmpty){
+      navigator.push(MaterialPageRoute(builder: (context) {
+        return const SelectLikeRecipeScreen();
+      }));
+    }
+  }
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: kWhiteColor,
       body: Center(
@@ -115,10 +128,10 @@ Widget kUploadBottomSheet(BuildContext context) {
               borderRadius: BorderRadius.circular(10),
               border: Border.all(color: kGreyColor),
             ),
-            child: Text('레시피 등록하기'),
+            child: const Text('레시피 등록하기'),
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Container(
           alignment: Alignment.center,
           padding: const EdgeInsets.all(10),
@@ -127,7 +140,7 @@ Widget kUploadBottomSheet(BuildContext context) {
             borderRadius: BorderRadius.circular(10),
             border: Border.all(color: kGreyColor),
           ),
-          child: Text('게시물 등록하기'),
+          child: const Text('게시물 등록하기'),
         ),
       ],
     ),

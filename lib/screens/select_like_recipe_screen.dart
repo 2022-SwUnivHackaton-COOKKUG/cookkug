@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cookkug/constants.dart';
+import 'package:cookkug/controllers/local_controller.dart';
 import 'package:cookkug/models/recipe/recipe.dart';
 import 'package:cookkug/services/http_service.dart';
 import 'package:flutter/material.dart';
@@ -46,12 +47,18 @@ class _SelectLikeRecipeScreenState extends State<SelectLikeRecipeScreen> {
                       fontSize: 16,
                     ),
                   ),
-                  Text(
-                    '다음',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: kMainColor,
-                      fontWeight: FontWeight.bold,
+                  GestureDetector(
+                    onTap: ()async{
+                      await LocalController().setRecipeList(recipeIdList);
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      '다음',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: kMainColor,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   )
                 ],

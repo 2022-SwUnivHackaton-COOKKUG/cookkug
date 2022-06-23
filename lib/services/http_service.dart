@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:math';
 
+import 'package:cookkug/controllers/local_controller.dart';
 import 'package:cookkug/models/recipe/recipe.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -31,12 +33,26 @@ class HttpService {
 
   }
 
-  void getRecipeListWithKeywork(String keyword) async {
+  Future<List<Recipe>> getRecipeListWithKeywork(String keyword) async {
+    List<String>? registeredRecipeIdList = await LocalController().getRecipeListId();
+    String urlKey = keyword;
+    if(registeredRecipeIdList!=null||registeredRecipeIdList!.isNotEmpty) {
+      for(int i = 0; i < min(registeredRecipeIdList.length, 3);i++){
+        urlKey+='_${registeredRecipeIdList[i]}';
+      }
+    }
+
     Response getRecipeData =
-        await http.get(Uri.parse('http://118.67.128.79:8000/recipe/384508'));
+        await http.get(Uri.parse('http://118.67.128.79:8000/keyword/$urlKey'));
     final decodeData = utf8.decode(getRecipeData.bodyBytes);
-    Map<String, dynamic> result = jsonDecode(decodeData);
-    getRecipeWithData(result);
+    List result = jsonDecode(decodeData);
+    List<Recipe> recipeList = [];
+    for (var element in result) {
+      Recipe recipe = await getRecipeWithData(element);
+      recipeList.add(recipe);
+    }
+    print(recipeList);
+    return recipeList;
   }
 
   Future<Recipe> getRecipeWithData(Map<String, dynamic> data) async {

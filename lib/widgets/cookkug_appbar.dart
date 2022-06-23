@@ -2,6 +2,7 @@ import 'package:cookkug/screens/select_like_recipe_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
+import '../controllers/local_controller.dart';
 import '../screens/user_list_screen.dart';
 
 class CookKugAppbar extends StatelessWidget implements PreferredSizeWidget {
@@ -23,9 +24,7 @@ class CookKugAppbar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         IconButton(
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return SelectLikeRecipeScreen();
-            }));
+LocalController().clearSharedPreferences();
           },
           icon: Icon(Icons.search, color: kMainColor),
         ),

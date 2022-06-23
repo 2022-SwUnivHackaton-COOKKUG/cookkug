@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:cookkug/controllers/user_controller.dart';
 import 'package:cookkug/models/recipe/recipe.dart';
+import 'package:cookkug/screens/recipe_keyword_screen.dart';
 import 'package:cookkug/services/firebase_service.dart';
 import 'package:cookkug/services/http_service.dart';
 import 'package:cookkug/widgets/cookkug_recipe_card.dart';
@@ -148,12 +149,12 @@ Widget kNavigateToRecipeArea(BuildContext context) {
 
 Widget kRecipeButton(BuildContext context, {required String text}) {
   return GestureDetector(
-    onTap: () {
-      HttpService().getRecipeListWithKeywork('0');
-      //TODO 추천 레시피 결과 화면으로 넘어갈 수 있도록
-      // Navigator.push(context,MaterialPageRoute(builder: (context){
-      //   return Container();
-      // }));
+    onTap: ()async {
+      List data = kKeyworkList.firstWhere((element) => element[0]==text);
+      List<Recipe> recipeList = await HttpService().getRecipeListWithKeywork('${data[1]}');
+      Navigator.push(context,MaterialPageRoute(builder: (context){
+        return RecipeKeyworkScreen(keyword: data[0], recipeList: recipeList);
+      }));
     },
     child: Material(
       elevation: 2,
