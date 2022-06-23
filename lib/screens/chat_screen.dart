@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cookkug/constants.dart';
 import 'package:cookkug/controllers/user_controller.dart';
 import 'package:cookkug/models/chatRoom/chatRoom.dart';
@@ -41,24 +42,46 @@ Widget kChatRoomListTile(BuildContext context, {required ChatRoom chatRoom}) {
     children: [
       ListTile(
         onTap: () =>
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
           return ChatRoomScreen(chatRoomId: chatRoom.id);
         })),
-        leading: Container(
-          width: 50,
-          height: 50,
-          decoration: BoxDecoration(
-            color: kBlackColor,
-            borderRadius: BorderRadius.circular(25),
-          ),
-        ),
+        leading: FutureBuilder(
+            future: FirebaseService().getUserImage(chatRoom.userIdList
+                .firstWhere(
+                    (element) => element != UserController.to.user!.uid)),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                String imageUrl = snapshot.data as String;
+                if (imageUrl != '') {
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(25),
+                    child: SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: CachedNetworkImage(
+                        imageUrl: imageUrl,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Container(),
+                        errorWidget: (context, url, error) =>
+                            const Center(child: Icon(Icons.error_outline)),
+                      ),
+                    ),
+                  );
+                }
+              }
+              return Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25),
+                  border: Border.all(color: kBlackColor),
+                  color: kWhiteColor,
+                ),
+              );
+            }),
         title: Text(chatRoom.userList.firstWhere(
             (element) => element['id'] != UserController.to.user!.uid)['name']),
         subtitle: Text(chatRoom.lastMessage),
-      ),
-      const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        child: Divider(),
       ),
     ],
   );

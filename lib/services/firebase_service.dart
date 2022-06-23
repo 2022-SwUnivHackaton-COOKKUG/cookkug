@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cookkug/controllers/user_controller.dart';
+import 'package:cookkug/models/recipe/recipe.dart';
 import 'package:cookkug/models/user/user.dart' as mUser;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 import '../models/chatRoom/chatRoom.dart';
@@ -19,6 +24,7 @@ class FirebaseService {
   // Firestore 객체
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  static final FirebaseStorage _firestorage = FirebaseStorage.instance;
 
   Future<List<ChatRoom>> getChatRoomList() async {
     try {
@@ -56,10 +62,10 @@ class FirebaseService {
         .snapshots();
   }
 
-  Future<String> getUserImage(String uid)async{
+  Future<String> getUserImage(String uid) async {
     DocumentSnapshot<Map<String, dynamic>> userData =
-    await _firestore.collection('user').doc(uid).get();
-    Map<String,dynamic> user = userData.data() as Map<String,dynamic>;
+        await _firestore.collection('user').doc(uid).get();
+    Map<String, dynamic> user = userData.data() as Map<String, dynamic>;
     return user['image'];
   }
 
@@ -167,7 +173,7 @@ class FirebaseService {
         }
       }
       String timeStamp = DateTime.now().toString();
-      String chatRoomDocumentId = Uuid().v4();
+      String chatRoomDocumentId = const Uuid().v4();
       await _firestore.collection('chatroom').doc(chatRoomDocumentId).set({
         'id': chatRoomDocumentId,
         'userIdList': [UserController.to.user!.uid, receiverId],
@@ -230,11 +236,53 @@ class FirebaseService {
         .collection('chatroom')
         .doc(chatRoomId)
         .collection('chat')
-        .doc(chatId).set({
-      'id':chatId,
+        .doc(chatId)
+        .set({
+      'id': chatId,
       'senderId': UserController.to.user!.uid,
       'message': message,
       'timeStamp': timeStamp,
     });
+  }
+
+  Future<List<String>> uploadImages(List<XFile>? images) async {
+    if (images == null) return [];
+    List<String> imageUrl = [];
+    for (XFile element in images) {
+      String imagePath = const Uuid().v4();
+      String destination = 'images/$imagePath';
+      final ref = _firestorage.ref(destination);
+      TaskSnapshot uploadedFile = await ref.putFile(File(element.path));
+      imageUrl.add(await uploadedFile.ref.getDownloadURL());
+    }
+    return imageUrl;
+  }
+
+  Future<bool> uploadRecipe({
+    required List<XFile> images,
+    required String recipeName,
+    required String cookingTime,
+    required String recipeCategory,
+    required List<String> ingredientList,
+    required List<String> cookingOrder,
+  }) async {
+    try{
+      List<String> imageUrl = await uploadImages(images);
+      String recipeId = const Uuid().v4();
+      await _firestore.collection('recipe').doc(recipeId).set(Recipe(
+        id: recipeId,
+        image: imageUrl,
+        recipeName: recipeName,
+        cookingTime: cookingTime,
+        recipeCategory: recipeCategory,
+        ingredientList: ingredientList,
+        cookingOrder: cookingOrder,
+      ).toJson());
+      return true;
+    }catch(e){
+      print(e);
+      return false;
+    }
+
   }
 }

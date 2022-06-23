@@ -1,12 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cookkug/controllers/user_controller.dart';
+import 'package:cookkug/models/cookkugRecipe/cookkugRecipe.dart';
 import 'package:cookkug/screens/user_list_screen.dart';
+import 'package:cookkug/widgets/cookkug_recipe_card.dart';
 
 import '../constants.dart';
 import '../controllers/cook_controller.dart';
 import '../models/cook/cook.dart';
 import '../widgets/cooking_card.dart';
 import 'package:flutter/material.dart';
+
+import '../widgets/cookkug_appbar.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -16,54 +20,87 @@ class HomeScreen extends StatelessWidget {
     print(UserController.to.user!.uid);
     return Scaffold(
       backgroundColor: kWhiteColor,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: kWhiteColor,
-        foregroundColor: kBlackColor,
-        elevation: 0,
-        centerTitle: false,
-        title: SizedBox(
-          height: 30,
-          child: Image.asset('assets/logo/text_logo.png'),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.search, color: kMainColor),
-          ),
-          IconButton(
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return UserListScreen();
-              }));
-            },
-            icon: Icon(Icons.notifications, color: kMainColor),
-          ),
-        ],
-      ),
+      appBar: const CookKugAppbar(),
       body: ListView(
         children: [
-          recipeRecommendedArea(context),
-          recommendedCookArea(context),
+          kRecipeRecommendedArea(context),
+          kNavigateToRecipeArea(context),
+          kFriendCookArea(context),
+          kRecentlyCookArea(context),
         ],
       ),
     );
   }
 }
 
-Widget recipeRecommendedArea(BuildContext context) {
+Widget kRecipeRecommendedArea(BuildContext context) {
   return Container(
-    margin: const EdgeInsets.only(left: 16, right: 16, bottom: 32),
+    margin: const EdgeInsets.only(left: 16, right: 16),
     padding: const EdgeInsets.all(20),
     width: double.infinity,
-    height: MediaQuery.of(context).size.width * 21 / 20,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '오늘 뭐 먹지?',
+          style: TextStyle(
+            fontSize: 20,
+            color: kMainColor,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const FittedBox(
+          child: Text(
+            '고민만하다 시간을 허비하는 자취생들을 위해',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+        ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            SizedBox(
+              width: 100,
+              height: 100,
+              child: Image.asset(
+                'assets/logo/character_logo_hat.png',
+                fit: BoxFit.fill,
+              ),
+            ),
+            const Expanded(
+              child: FittedBox(
+                child: Text(
+                  '쿡꾹에서 준비한',
+                  style: TextStyle(
+                    fontSize: 100,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const FittedBox(
+          child: Text(
+            '초스피드 레시피',
+            style: TextStyle(
+              fontSize: 100,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        )
+      ],
+    ),
+  );
+}
+
+Widget kNavigateToRecipeArea(BuildContext context) {
+  return Container(
+    padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
-      color: kWhiteColor,
-      borderRadius: BorderRadius.circular(30),
-      image: const DecorationImage(
-        fit: BoxFit.fitHeight,
-        image: AssetImage('assets/images/today_recipe_image.jpeg'),
-      ),
+      color: kLightGreyColor,
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,39 +108,28 @@ Widget recipeRecommendedArea(BuildContext context) {
         RichText(
           text: TextSpan(
             style: TextStyle(
-              fontSize: 28,
-              color: kWhiteColor,
               fontWeight: FontWeight.bold,
+              fontSize: 18,
+              color: kBlackColor,
             ),
             children: [
-              const TextSpan(text: '쿡꾹이 추천하는\n'),
+              const TextSpan(text: '#버튼을 '),
               TextSpan(
-                text: '오늘의 ',
-                style: TextStyle(
-                  color: kMainColor,
-                ),
-              ),
-              const TextSpan(text: '요리레시피'),
+                  text: '꾹 ',
+                  style: TextStyle(
+                    color: kMainColor,
+                  )),
+              const TextSpan(text: '눌러 레시피 보러가기'),
             ],
           ),
         ),
-        const Spacer(),
+        const SizedBox(height: 10),
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Spacer(),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: kWhiteColor,
-              size: 14,
-            ),
-            Text(
-              '꾹 눌러 추천받기',
-              style: TextStyle(
-                fontSize: 16,
-                color: kWhiteColor,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            kRecipeButton(context, text: '간단한'),
+            kRecipeButton(context, text: '특별한'),
+            kRecipeButton(context, text: '건강한'),
           ],
         ),
       ],
@@ -111,25 +137,118 @@ Widget recipeRecommendedArea(BuildContext context) {
   );
 }
 
-Widget recommendedCookArea(BuildContext context) {
+Widget kRecipeButton(BuildContext context, {required String text}) {
+  return GestureDetector(
+    onTap: () {
+      //TODO 추천 레시피 결과 화면으로 넘어갈 수 있도록
+      // Navigator.push(context,MaterialPageRoute(builder: (context){
+      //   return Container();
+      // }));
+    },
+    child: Material(
+      elevation: 2,
+      borderRadius: BorderRadius.circular(30),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        decoration: BoxDecoration(
+          color: kWhiteColor,
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: Text(
+          '#$text',
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget kFriendCookArea(BuildContext context) {
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 16),
+    padding: const EdgeInsets.all(16),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5),
-          child: Text(
-            '${UserController.to.user != null ? (UserController.to.user!.name != '' ? UserController.to.user!.name : '홍길동') : '홍길동'}님을 위한 초스피드 레시피',
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        SizedBox(
+          width: 60,
+          height: 40,
+          child: Image.asset(
+            'assets/logo/character_logo.png',
+            fit: BoxFit.fitWidth,
           ),
+        ),
+        Row(
+          children: [
+            const SizedBox(width: 5),
+            Text(
+              '친구의 레시피',
+              style: TextStyle(
+                color: kMainColor,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const Text(
+              ' 엿보기',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: 10),
         //TODO FutureBuilder로 서버로부터 데이터를 받아오면 그걸 여기서 변환해주는방식
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: CookController.to.recommendCookList.map((Cook cook) {
+            children: CookController.to.cookkugRecipeList
+                .map((CookkugRecipe cookkugRecipe) {
+              return CookkugRecipeCard(cookkugRecipe: cookkugRecipe);
+            }).toList(),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget kRecentlyCookArea(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.all(16),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            const SizedBox(width: 5),
+            Text(
+              '최근에',
+              style: TextStyle(
+                color: kMainColor,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const Text(
+              ' 봤어요',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        //TODO FutureBuilder로 서버로부터 데이터를 받아오면 그걸 여기서 변환해주는방식
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: CookController.to.recommendCookList
+                .map((Cook cook) {
               return CookingCard(cook: cook);
             }).toList(),
           ),

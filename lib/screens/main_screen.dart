@@ -1,3 +1,7 @@
+import 'package:cookkug/screens/community_screen.dart';
+import 'package:cookkug/screens/recipe_upload_screen.dart';
+import 'package:flutter_svg/svg.dart';
+
 import '../constants.dart';
 import '../controllers/cook_controller.dart';
 import 'chat_screen.dart';
@@ -30,8 +34,8 @@ class _MainScreenState extends State<MainScreen> {
           index: _currentIndex,
           children: [
             const HomeScreen(),
-            Text('index : $_currentIndex'),
-            Text('index : $_currentIndex'),
+            const CommunityScreen(),
+            Container(),
             const ChatScreen(),
             Text('index : $_currentIndex'),
           ],
@@ -41,41 +45,91 @@ class _MainScreenState extends State<MainScreen> {
         elevation: 0,
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: kBlackColor,
+        selectedItemColor: kMainColor,
         backgroundColor: kWhiteColor,
         onTap: (int index) {
-          setState(() {
-            _currentIndex = index;
-          });
+          if (index == 2) {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return kUploadBottomSheet(context);
+              },
+            );
+          } else {
+            setState(() {
+              _currentIndex = index;
+            });
+          }
         },
         items: [
           BottomNavigationBarItem(
-            icon: Icon(_currentIndex == 0 ? Icons.home : Icons.home_outlined),
+            icon: SvgPicture.asset(
+                'assets/icons/home${_currentIndex == 0 ? '_fill' : ''}.svg'),
             label: '홈',
           ),
           BottomNavigationBarItem(
-            icon:
-                Icon(_currentIndex == 1 ? Icons.search : Icons.search_outlined),
+            icon: SvgPicture.asset(
+                'assets/icons/cookkug_friend${_currentIndex == 1 ? '_fill' : ''}.svg'),
             label: '레시피꾹',
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-                _currentIndex == 2 ? Icons.add_box : Icons.add_box_outlined),
+            icon: SvgPicture.asset(
+                'assets/icons/share${_currentIndex == 2 ? '_fill' : ''}.svg'),
             label: '공유하기',
           ),
           BottomNavigationBarItem(
-            icon: Icon(_currentIndex == 3
-                ? Icons.chat_bubble
-                : Icons.chat_bubble_outline),
+            icon: SvgPicture.asset(
+                'assets/icons/chat${_currentIndex == 3 ? '_fill' : ''}.svg'),
             label: '채팅',
           ),
           BottomNavigationBarItem(
-            icon:
-                Icon(_currentIndex == 4 ? Icons.person : Icons.person_outline),
+            icon: SvgPicture.asset(
+                'assets/icons/my_cookkug${_currentIndex == 4 ? '_fill' : ''}.svg'),
             label: '나의쿡꾹',
           ),
         ],
       ),
     );
   }
+}
+
+Widget kUploadBottomSheet(BuildContext context) {
+  return Container(
+    padding: const EdgeInsets.all(16),
+    height: 150,
+    color: Colors.black.withAlpha(1),
+    child: Column(
+      children: [
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              return const RecipeUploadScreen();
+            }));
+          },
+          child: Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(10),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: kGreyColor),
+            ),
+            child: Text('레시피 등록하기'),
+          ),
+        ),
+        SizedBox(height: 10),
+        Container(
+          alignment: Alignment.center,
+          padding: const EdgeInsets.all(10),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: kGreyColor),
+          ),
+          child: Text('게시물 등록하기'),
+        ),
+      ],
+    ),
+  );
 }

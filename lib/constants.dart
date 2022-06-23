@@ -10,6 +10,8 @@ List kCookingCategoryList = [
   {'category': 'snack', 'categoryName': '간식'},
 ];
 
+List kFoodCategoryList = ['한식','양식','중식','치킨','분식','피자','간식','패스트푸드','아시안','디저트','메인반찬','서브반찬'];
+
 Color kWhiteColor = const Color(0xFFFFFFFF);
 Color kBlackColor = const Color(0xFF000000);
 Color kMainColor = const Color(0xFFFF9119);
