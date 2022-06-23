@@ -18,10 +18,17 @@ class UserController extends GetxController {
 
   Future<List<User>> getUserList() async {
     List userList = await FirebaseService().getUserList();
-    List<User> cookkugUserList = userList.map((e) {
-      return User.fromJson(e);
-    }).toList();
-    print('hello : $cookkugUserList');
-    return cookkugUserList;
+    try{
+      List<User> cookkugUserList = userList.map((e) {
+        return User.fromJson(e);
+      }).toList();
+      print('hello : $cookkugUserList');
+      return cookkugUserList;
+    }catch(e){
+      print(e);
+      return [];
+    }
+
   }
+
 }

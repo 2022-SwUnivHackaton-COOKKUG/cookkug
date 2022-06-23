@@ -1,4 +1,8 @@
 import 'package:cookkug/constants.dart';
+import 'package:cookkug/controllers/user_controller.dart';
+import 'package:cookkug/models/chatRoom/chatRoom.dart';
+import 'package:cookkug/screens/chat_room_screen.dart';
+import 'package:cookkug/services/firebase_service.dart';
 import 'package:flutter/material.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -14,33 +18,32 @@ class ChatScreen extends StatelessWidget {
         elevation: 0,
         title: const Text('채팅'),
       ),
-      body: ListView(
-        children: [
-          kChatRoomListTile(
-            otherId: '1',
-            otherName: '정훈1',
-            lastMessage: '안녕하세요',
-          ),
-          kChatRoomListTile(
-            otherId: '1',
-            otherName: '정훈1',
-            lastMessage: '안녕하세요',
-          ),
-        ],
-      ),
+      body: FutureBuilder(
+          future: FirebaseService().getChatRoomList(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              List<ChatRoom> chatRoomList = snapshot.data as List<ChatRoom>;
+              return ListView(
+                children: chatRoomList.map((chatRoom) {
+                  return kChatRoomListTile(context, chatRoom: chatRoom);
+                }).toList(),
+              );
+            }
+            return Container();
+          }),
     );
   }
 }
 
-Widget kChatRoomListTile({
-  required String otherId,
-  required String otherName,
-  required String lastMessage,
-}) {
+Widget kChatRoomListTile(BuildContext context, {required ChatRoom chatRoom}) {
   return Column(
     mainAxisSize: MainAxisSize.min,
     children: [
       ListTile(
+        onTap: () =>
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return ChatRoomScreen(chatRoomId: chatRoom.id);
+        })),
         leading: Container(
           width: 50,
           height: 50,
@@ -49,11 +52,12 @@ Widget kChatRoomListTile({
             borderRadius: BorderRadius.circular(25),
           ),
         ),
-        title: Text(otherName),
-        subtitle: Text(lastMessage),
+        title: Text(chatRoom.userList.firstWhere(
+            (element) => element['id'] != UserController.to.user!.uid)['name']),
+        subtitle: Text(chatRoom.lastMessage),
       ),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+      const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16),
         child: Divider(),
       ),
     ],

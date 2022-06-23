@@ -4,6 +4,9 @@ import 'package:cookkug/models/user/user.dart' as mUser;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:uuid/uuid.dart';
+
+import '../models/chatRoom/chatRoom.dart';
 
 class FirebaseService {
   // 싱글톤 객체 생성
@@ -17,6 +20,42 @@ class FirebaseService {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
+  Future<List<ChatRoom>> getChatRoomList() async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> chatRoomList = await _firestore
+          .collection('chatroom')
+          .where('userIdList', arrayContains: UserController.to.user!.uid)
+          .get();
+      return chatRoomList.docs.map((e) {
+        return ChatRoom.fromJson(e.data());
+      }).toList();
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
+
+  Future<ChatRoom?> getChatRoomWithId(String chatRoomId) async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> chatRoomData =
+          await _firestore.collection('chatroom').doc(chatRoomId).get();
+      return ChatRoom.fromJson(chatRoomData.data());
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getChatStreamWithChatRoomId(
+      String chatRoomId) {
+    return _firestore
+        .collection('chatroom')
+        .doc(chatRoomId)
+        .collection('chat')
+        .orderBy('timeStamp')
+        .snapshots();
+  }
+
   Future<bool> registerWithEmailAndPassword(
       {required String email, required String password}) async {
     try {
@@ -29,7 +68,7 @@ class FirebaseService {
         'name': password,
         'uid': userCredential.user!.uid,
         'friends': [],
-        'chatRoomList':[],
+        'chatRoomList': [],
       });
       return true;
     } catch (e) {
@@ -115,14 +154,15 @@ class FirebaseService {
     //1. chat을 만든다
     //2. update를 하는데 receiver,user 둘다 업데이트해준다
     try {
-      for (var chatroom in UserController.to.user!.chatRoomList) {
+      for (var chatroom in UserController.to.user!.chatRoomList ?? []) {
         if (chatroom['userIdList'].contains(receiverId)) {
           return chatroom['id'];
         }
       }
       String timeStamp = DateTime.now().toString();
-      DocumentReference<Map<String, dynamic>> chatData =
-      await _firestore.collection('chatroom').add({
+      String chatRoomDocumentId = Uuid().v4();
+      await _firestore.collection('chatroom').doc(chatRoomDocumentId).set({
+        'id': chatRoomDocumentId,
         'userIdList': [UserController.to.user!.uid, receiverId],
         'userList': [
           {
@@ -143,26 +183,26 @@ class FirebaseService {
           .doc(UserController.to.user!.uid)
           .update({
         'chatRoomList': [
-          ...UserController.to.user!.chatRoomList,
+          ...UserController.to.user!.chatRoomList ?? [],
           {
-            'id': chatData.id,
+            'id': chatRoomDocumentId,
             'userIdList': [UserController.to.user!.uid, receiverId],
           }
         ]
       });
       DocumentSnapshot<Map<String, dynamic>> receiverData =
-      await _firestore.collection('user').doc(receiverId).get();
+          await _firestore.collection('user').doc(receiverId).get();
 
       await _firestore.collection('user').doc(receiverId).update({
         'chatRoomList': [
           ...receiverData.data()!['chatRoomList'],
           {
-            'id': chatData.id,
+            'id': chatRoomDocumentId,
             'userList': [UserController.to.user!.uid, receiverId],
           }
         ]
       });
-      return chatData.id;
+      return chatRoomDocumentId;
     } catch (e) {
       print(e);
       return null;
@@ -178,11 +218,13 @@ class FirebaseService {
       'lastMessage': message,
       'lastMessageTimeStamp': timeStamp,
     });
+    String chatId = const Uuid().v4();
     await _firestore
         .collection('chatroom')
         .doc(chatRoomId)
         .collection('chat')
-        .add({
+        .doc(chatId).set({
+      'id':chatId,
       'senderId': UserController.to.user!.uid,
       'message': message,
       'timeStamp': timeStamp,

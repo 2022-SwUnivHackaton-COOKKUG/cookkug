@@ -33,6 +33,8 @@ dependencies:
   google_sign_in: ^5.3.3
   # 이미지선택 라이브러리
   image_picker: ^0.8.5+3
+  # doc Id 생성 위한 라이브러리
+  uuid: ^3.0.6
 
 dev_dependencies:
   flutter_test:
