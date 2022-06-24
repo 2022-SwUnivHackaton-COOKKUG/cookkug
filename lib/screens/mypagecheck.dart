@@ -62,16 +62,14 @@ class _MyPageCheckState extends State<MyPageCheck> {
                           style: TextStyle(
                               color: Colors.black,
                               letterSpacing: 1.0,
-                              fontSize: 21.0,
+                              fontSize: 20.0,
                               fontWeight: FontWeight.bold),
                         ),
-                        Text(
-                          ' 쿡꾹',
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 255, 138, 0),
-                              letterSpacing: 1.0,
-                              fontSize: 21.0,
-                              fontWeight: FontWeight.bold),
+                        SizedBox(
+                          height: 30,
+                          child: Image(
+                            image: AssetImage('assets/logo/text_logo.png'),
+                          ),
                         ),
                       ],
                     ),

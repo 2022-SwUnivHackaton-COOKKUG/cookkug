@@ -153,7 +153,7 @@ Widget kRecipeButton(BuildContext context, {required String text}) {
       List data = kKeyworkList.firstWhere((element) => element[0]==text);
       List<Recipe> recipeList = await HttpService().getRecipeListWithKeywork('${data[1]}');
       Navigator.push(context,MaterialPageRoute(builder: (context){
-        return RecipeKeywordScreen(keyword: data[0], recipeList: recipeList);
+        return RecipeKeyworkScreen(keyword: data[0], recipeList: recipeList);
       }));
     },
     child: Material(

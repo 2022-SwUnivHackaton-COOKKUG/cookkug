@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cookkug/controllers/user_controller.dart';
 import 'package:cookkug/models/recipe/recipe.dart';
+import 'package:cookkug/models/post/post.dart';//
 import 'package:cookkug/models/user/user.dart' as mUser;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -279,6 +280,30 @@ class FirebaseService {
         recipeCategory: recipeCategory,
         ingredientList: ingredientList,
         cookingOrder: cookingOrder,
+      ).toJson());
+      return true;
+    }catch(e){
+      print(e);
+      return false;
+    }
+
+  }
+
+  Future<bool> uploadPost({
+    required List<XFile> images,
+    required String note,
+    required List<String> hashtagList,
+  }) async {
+    try{
+      List<String> imageUrl = await uploadImages(images);
+      String postId = const Uuid().v4();
+      await _firestore.collection('recipe').doc(postId).set(Post(
+        id: postId,
+        authorId: UserController.to.user!.uid,
+        authorName: UserController.to.user!.name,
+        image: imageUrl,
+        note: note,
+        hashtagList: hashtagList,
       ).toJson());
       return true;
     }catch(e){

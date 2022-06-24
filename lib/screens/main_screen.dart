@@ -1,4 +1,5 @@
 import 'package:cookkug/screens/community_screen.dart';
+import 'package:cookkug/screens/mypage.dart';
 import 'package:cookkug/screens/recipe_upload_screen.dart';
 import 'package:cookkug/screens/select_like_recipe_screen.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,6 +11,7 @@ import 'chat_screen.dart';
 import 'home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'post_upload1.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -50,7 +52,7 @@ class _MainScreenState extends State<MainScreen> {
             const CommunityScreen(),
             Container(),
             const ChatScreen(),
-            Text('index : $_currentIndex'),
+            const MyPage(),
           ],
         ),
       ),
@@ -132,7 +134,14 @@ Widget kUploadBottomSheet(BuildContext context) {
           ),
         ),
         const SizedBox(height: 10),
-        Container(
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              return const Upload();
+            }));
+          },
+          child: Container(
           alignment: Alignment.center,
           padding: const EdgeInsets.all(10),
           width: double.infinity,
@@ -141,6 +150,7 @@ Widget kUploadBottomSheet(BuildContext context) {
             border: Border.all(color: kGreyColor),
           ),
           child: const Text('게시물 등록하기'),
+        ),
         ),
       ],
     ),

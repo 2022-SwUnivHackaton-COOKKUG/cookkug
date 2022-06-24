@@ -34,9 +34,6 @@ class _MyPageChangeState extends State<MyPageChange> {
     if (nameController.text != "") {
       _user.update({'name': nameController.text});
     }
-    if (addressController.text != "") {
-      _user.update({'address': addressController.text});
-    }
   }
 
   void updatePassword() {
@@ -55,7 +52,6 @@ class _MyPageChangeState extends State<MyPageChange> {
 
   String userE = "";
   String userN = "";
-  String userA = "";
 
   Future<String> getUser() async {
     var _docSnapshot = await _user.get();
@@ -63,8 +59,6 @@ class _MyPageChangeState extends State<MyPageChange> {
     print(userE);
     userN = _docSnapshot['name'];
     print(userN);
-    userA = _docSnapshot['address'];
-    print(userA);
 
     return userE;
   }
@@ -92,16 +86,14 @@ class _MyPageChangeState extends State<MyPageChange> {
                           style: TextStyle(
                               color: Colors.black,
                               letterSpacing: 1.0,
-                              fontSize: 21.0,
+                              fontSize: 20.0,
                               fontWeight: FontWeight.bold),
                         ),
-                        Text(
-                          ' 쿡꾹',
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 255, 138, 0),
-                              letterSpacing: 1.0,
-                              fontSize: 21.0,
-                              fontWeight: FontWeight.bold),
+                        SizedBox(
+                          height: 30,
+                          child: Image(
+                            image: AssetImage('assets/logo/text_logo.png'),
+                          ),
                         ),
                       ],
                     ),
@@ -266,8 +258,8 @@ class _MyPageChangeState extends State<MyPageChange> {
                               enabled: false,
                               decoration: InputDecoration(
                                   prefixIcon: const Icon(Icons.mail),
-                                  contentPadding: const EdgeInsets.fromLTRB(
-                                      20, 15, 20, 15),
+                                  contentPadding:
+                                      const EdgeInsets.fromLTRB(20, 15, 20, 15),
                                   hintText: userE,
                                   border: OutlineInputBorder(
                                       borderRadius:
