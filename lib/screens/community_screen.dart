@@ -15,24 +15,25 @@ class CommunityScreen extends StatelessWidget {
       appBar: const CookKugAppbar(),
       body: ListView(
         children: [
+          const SizedBox(height: 20),
           kTopInfoArea(),
           const SizedBox(height: 20),
           kCommunityCard(
               title: '크림스프와 스튜의 중간쯤🥛',
-              content: '크림스튜 레시피를 보고 했긴한데 사랑니때문에 이가 아파서 재료를 좀 잘게 썰었더니 스프처럼 됐네요😆맛있으면 장땡!',
+              content:
+                  '크림스튜 레시피를 보고 했긴한데 사랑니때문에 이가 아파서 재료를 좀 잘게 썰었더니 스프처럼 됐네요😆맛있으면 장땡!',
               imageUrl:
-              'https://img.freepik.com/free-photo/soup-puree-of-champignon-in-bowl-on-light-board-top_423299-4764.jpg?size=626&ext=jpg',
+                  'https://img.freepik.com/free-photo/soup-puree-of-champignon-in-bowl-on-light-board-top_423299-4764.jpg?size=626&ext=jpg',
               authorName: '프로자취러',
               getTimeDifference: '1시간전',
               sympathyCount: 24,
               commentCount: 31,
-              isOdd: true
-          ),
+              isOdd: true),
           kCommunityCard(
             title: '시금치미트아라비아따🌱',
             content: '넣은 건 다 나열한 음식이름이 먼가 웃기네요😆플레이팅 망했지만 맛있어서 괜찮아진😉',
             imageUrl:
-            'https://img.freepik.com/free-photo/spicy-spaghetti-in-a-frying-pan_1150-22155.jpg?size=626&ext=jpg&ga=GA1.2.1213798442.1656026467',
+                'https://img.freepik.com/free-photo/spicy-spaghetti-in-a-frying-pan_1150-22155.jpg?size=626&ext=jpg&ga=GA1.2.1213798442.1656026467',
             authorName: '파스타장인',
             getTimeDifference: '4시간전',
             sympathyCount: 41,
@@ -41,9 +42,10 @@ class CommunityScreen extends StatelessWidget {
           ),
           kCommunityCard(
             title: '비빔만두🥟',
-            content: '점심에도 만두먹고 저녁에도 만두먹는 만두광인..나야나..🤍 언제가 피드에서 보고 꼭 먹어야지 벼르고 있었는데 드디어! 만두 쪼오끔 탔지만 맛있게 잘 먹었습니다😆',
+            content:
+                '점심에도 만두먹고 저녁에도 만두먹는 만두광인..나야나..🤍 언제가 피드에서 보고 꼭 먹어야지 벼르고 있었는데 드디어! 만두 쪼오끔 탔지만 맛있게 잘 먹었습니다😆',
             imageUrl:
-            'https://img.freepik.com/free-photo/gunmandu-kimchi-mandu-korean-dumpling-on-plate-served-with-spicy-sauce-close-up_511235-8033.jpg?size=338&ext=jpg&ga=GA1.2.1213798442.1656026467',
+                'https://img.freepik.com/free-photo/gunmandu-kimchi-mandu-korean-dumpling-on-plate-served-with-spicy-sauce-close-up_511235-8033.jpg?size=338&ext=jpg&ga=GA1.2.1213798442.1656026467',
             authorName: '만두맛나용!',
             getTimeDifference: '10시간전',
             sympathyCount: 11,
@@ -52,9 +54,10 @@ class CommunityScreen extends StatelessWidget {
           ),
           kCommunityCard(
             title: '반미 샌드위치🥖',
-            content: '재료가 많은가? 했는데 많으면 맛있지! 해서 다 쑤셔 넣었더니 완성된 욕망의 반미 샌드위치,,🥰 한 입에 들어가진 않지만 넘 맛있게 잘 먹었습니다😆',
+            content:
+                '재료가 많은가? 했는데 많으면 맛있지! 해서 다 쑤셔 넣었더니 완성된 욕망의 반미 샌드위치,,🥰 한 입에 들어가진 않지만 넘 맛있게 잘 먹었습니다😆',
             imageUrl:
-            'https://img.freepik.com/free-photo/delicious-sandwich-with-lettuce_144627-33591.jpg?size=626&ext=jpg&ga=GA1.2.1213798442.1656026467',
+                'https://img.freepik.com/free-photo/delicious-sandwich-with-lettuce_144627-33591.jpg?size=626&ext=jpg&ga=GA1.2.1213798442.1656026467',
             authorName: '파스타장인',
             getTimeDifference: '4시간전',
             sympathyCount: 21,
@@ -65,7 +68,7 @@ class CommunityScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: kMainColor,
-        onPressed: (){},
+        onPressed: () {},
         child: Icon(Icons.add),
       ),
     );
@@ -121,7 +124,7 @@ Widget kCommunityCard({
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 16),
     width: double.infinity,
-    color: isOdd?kLightGreyColor:kWhiteColor,
+    color: isOdd ? kLightGreyColor : kWhiteColor,
     child: Column(
       children: [
         const SizedBox(height: 20),
@@ -163,7 +166,7 @@ Widget kCommunityCard({
                   fit: BoxFit.cover,
                   placeholder: (context, url) => Container(),
                   errorWidget: (context, url, error) =>
-                  const Center(child: Icon(Icons.error_outline)),
+                      const Center(child: Icon(Icons.error_outline)),
                 ),
               ),
             ),

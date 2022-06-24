@@ -6,7 +6,6 @@ import '../controllers/local_controller.dart';
 import '../screens/user_list_screen.dart';
 
 class CookKugAppbar extends StatelessWidget implements PreferredSizeWidget {
-  
   const CookKugAppbar({Key? key}) : super(key: key);
 
   @override
@@ -15,32 +14,37 @@ class CookKugAppbar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: false,
       backgroundColor: kWhiteColor,
       foregroundColor: kBlackColor,
-      elevation: 0,
+      elevation: 2,
       centerTitle: false,
       title: SizedBox(
         height: 30,
         child: Image.asset('assets/logo/text_logo.png'),
       ),
       actions: [
-        IconButton(
-          onPressed: () {
-LocalController().clearSharedPreferences();
+        GestureDetector(
+          onTap: () {
+            LocalController().clearSharedPreferences();
           },
-          icon: Icon(Icons.search, color: kMainColor),
+          child: Icon(
+            Icons.search,
+            color: kMainColor,
+          ),
         ),
-        IconButton(
-          onPressed: () {
+        SizedBox(width: 10),
+        GestureDetector(
+          onTap: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return UserListScreen();
             }));
           },
-          icon: Icon(Icons.notifications, color: kMainColor),
+          child: Icon(Icons.notifications, color: kMainColor),
         ),
+        SizedBox(width: 10),
       ],
     );
   }
 
   @override
   // TODO: implement preferredSize
-  Size get preferredSize => Size.fromHeight(AppBar().preferredSize.height);
+  Size get preferredSize => Size.fromHeight(AppBar().preferredSize.height-10);
 }

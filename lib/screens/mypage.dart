@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cookkug/controllers/user_controller.dart';
 import 'package:cookkug/screens/login_screen.dart';
+import 'package:cookkug/services/firebase_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'mypagecheck.dart';
@@ -44,90 +46,6 @@ class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
 
     return userE;
   }
-
-  /*
-  Widget _tabMenu() {
-    return TabBar(
-      controller: tabcontroller,
-      indicatorColor: Color.fromARGB(255, 255, 138, 0),
-      indicatorWeight: 3,
-      tabs: [
-        Container(
-          padding: const EdgeInsets.all(10),
-          child: Icon(
-            Icons.apps,
-            color: Color.fromARGB(255, 255, 138, 0),
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.all(10),
-          child: Icon(
-            Icons.people,
-            color: Color.fromARGB(255, 255, 138, 0),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _tabVV() {
-    return TabBarView(children: []);
-  }
-
-  Widget _tabView() {
-    return GridView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: 12,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            childAspectRatio: 1,
-            mainAxisSpacing: 2,
-            crossAxisSpacing: 2),
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            color: Colors.grey,
-          );
-        });
-  }
-
-  Widget _discoverPeople() {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-          child: Row(
-            children: const [
-              Text(
-                'Discover People',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                  color: Colors.black,
-                ),
-              ),
-              Text(
-                'See All',
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
-                ),
-              )
-            ],
-          ),
-        ),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 5),
-          child: Row(
-            children: List.generate(10, (index) => const UserCard()).toList(),
-          ),
-        ),
-      ],
-    );
-  }
-  */
 
   @override
   Widget build(BuildContext context) {
@@ -178,78 +96,77 @@ class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
                   children: <Widget>[
                     //
                     _image == null
-                        ? Container(
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(8.0),
-                              child: const ClipOval(
-                                child: Image(
-                                  image: AssetImage('assets/images/loopie.jpg'),
-                                  width: 120.0,
-                                  height: 120.0,
-                                  fit: BoxFit.fill,
-                                ),
+                        ? InkWell(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: ClipOval(
+                              child: Image(
+                                image:
+                                    NetworkImage(UserController.to.user!.image),
+                                width: 120.0,
+                                height: 120.0,
+                                fit: BoxFit.fill,
                               ),
-                              onTap: () {
-                                showDialog(
-                                    context: context,
-                                    barrierDismissible: true, // 창 밖 선택시 창 닫기
-                                    builder: (BuildContext context) {
-                                      return Padding(
-                                        padding: const EdgeInsets.all(30.0),
-                                        child: AlertDialog(
-                                          title: const Text('프로필 이미지 설정',
-                                              textAlign: TextAlign.center),
-                                          actions: <Widget>[
-                                            const Divider(
-                                              height: 0.0,
-                                              color: Color.fromARGB(
-                                                  255, 255, 138, 0),
-                                              thickness: 1.5,
-                                              endIndent: 0.0,
-                                            ),
-                                            ListTile(
-                                              title: const Text('카메라',
-                                                  textAlign: TextAlign.center),
-                                              onTap: () {
-                                                getImage(ImageSource.camera);
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                            const Divider(
-                                              height: 0.0,
-                                              color: Color.fromARGB(
-                                                  255, 255, 138, 0),
-                                              thickness: 0.0,
-                                              endIndent: 0.0,
-                                            ),
-                                            ListTile(
-                                              title: const Text('갤러리',
-                                                  textAlign: TextAlign.center),
-                                              onTap: () {
-                                                getImage(ImageSource.gallery);
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                            const Divider(
-                                              height: 0.0,
-                                              color: Color.fromARGB(
-                                                  255, 255, 138, 0),
-                                              thickness: 0.0,
-                                              endIndent: 0.0,
-                                            ),
-                                            ListTile(
-                                              title: const Text('취소',
-                                                  textAlign: TextAlign.center),
-                                              onTap: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    });
-                              },
                             ),
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  barrierDismissible: true, // 창 밖 선택시 창 닫기
+                                  builder: (BuildContext context) {
+                                    return Padding(
+                                      padding: const EdgeInsets.all(30.0),
+                                      child: AlertDialog(
+                                        title: const Text('프로필 이미지 설정',
+                                            textAlign: TextAlign.center),
+                                        actions: <Widget>[
+                                          const Divider(
+                                            height: 0.0,
+                                            color: Color.fromARGB(
+                                                255, 255, 138, 0),
+                                            thickness: 1.5,
+                                            endIndent: 0.0,
+                                          ),
+                                          ListTile(
+                                            title: const Text('카메라',
+                                                textAlign: TextAlign.center),
+                                            onTap: () {
+                                              getImage(ImageSource.camera);
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                          const Divider(
+                                            height: 0.0,
+                                            color: Color.fromARGB(
+                                                255, 255, 138, 0),
+                                            thickness: 0.0,
+                                            endIndent: 0.0,
+                                          ),
+                                          ListTile(
+                                            title: const Text('갤러리',
+                                                textAlign: TextAlign.center),
+                                            onTap: () {
+                                              getImage(ImageSource.gallery);
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                          const Divider(
+                                            height: 0.0,
+                                            color: Color.fromARGB(
+                                                255, 255, 138, 0),
+                                            thickness: 0.0,
+                                            endIndent: 0.0,
+                                          ),
+                                          ListTile(
+                                            title: const Text('취소',
+                                                textAlign: TextAlign.center),
+                                            onTap: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  });
+                            },
                           )
                         : Image.file(
                             File(_image!.path),
@@ -414,6 +331,9 @@ class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
                             return Card(
                               margin: const EdgeInsets.all(10),
                               child: ListTile(
+                                onTap: () {
+                                  // 레시피 연동
+                                },
                                 leading: Image(
                                   image: NetworkImage(
                                       documentSnapshot['image'][0]),
@@ -421,9 +341,23 @@ class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
                                   height: 60.0,
                                   fit: BoxFit.fill,
                                 ),
-                                title: Text(documentSnapshot['recipeName']), //
-                                subtitle:
-                                    Text(documentSnapshot['recipeCategory']), //
+                                title: Text(
+                                  documentSnapshot['recipeName'],
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ), //
+                                subtitle: Text(
+                                  documentSnapshot['cookingTime'] +
+                                      ', ' +
+                                      documentSnapshot['recipeCategory'],
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ), //
                                 trailing: IconButton(
                                     onPressed: () {
                                       showDialog(
@@ -453,7 +387,10 @@ class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
                                             );
                                           });
                                     },
-                                    icon: Icon(Icons.delete)),
+                                    icon: Icon(
+                                      Icons.close,
+                                      color: Colors.grey,
+                                    )),
                               ),
                             );
                           },
@@ -465,23 +402,6 @@ class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
                     },
                   ),
                 ),
-                /*
-                  GridView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: 2,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 1,
-                              childAspectRatio: 1,
-                              mainAxisSpacing: 2,
-                              crossAxisSpacing: 2),
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          color: Colors.grey,
-                        );
-                      })
-                      */
               ],
             ),
           ),

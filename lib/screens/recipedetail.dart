@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../controllers/cook_controller.dart';
@@ -7,6 +8,7 @@ import '../widgets/cooking_card.dart';
 
 class RecipeDetail extends StatelessWidget {
   final Recipe recipe;
+
   const RecipeDetail({Key? key, required this.recipe}) : super(key: key);
 
   @override
@@ -32,15 +34,24 @@ class RecipeDetail extends StatelessWidget {
 }
 
 Widget getRecipeDetail(BuildContext context, Recipe recipe) {
+  print(recipe.cookingOrder[0]);
+  int index = 1;
+
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 20),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
-          margin: EdgeInsets.all(10),
-          child: Image.asset('assets/images/food1.png'),
-        ),
+            width: double.infinity,
+            margin: EdgeInsets.all(10),
+            child: CachedNetworkImage(
+              imageUrl: recipe.image[0],
+              fit: BoxFit.cover,
+              placeholder: (context, url) => Container(),
+              errorWidget: (context, url, error) =>
+                  const Center(child: Icon(Icons.error_outline)),
+            )),
         Center(
           child: Text(
             recipe.recipeName,
@@ -49,10 +60,6 @@ Widget getRecipeDetail(BuildContext context, Recipe recipe) {
         ),
         SizedBox(
           height: 20.0,
-        ),
-        Center(
-          child: Text('간단하게면서도 건강까지 챙길 수 있는 초간단 덮밥 레시피에요!',
-              style: TextStyle(fontSize: 12)),
         ),
         SizedBox(
           height: 20.0,
@@ -162,7 +169,7 @@ Widget getRecipeDetail(BuildContext context, Recipe recipe) {
                     ],
                   ),
                   child: Text(
-                    '명란2스푼',
+                    recipe.ingredientList[0],
                     style: TextStyle(fontSize: 10),
                     textAlign: TextAlign.center,
                   ),
@@ -185,7 +192,7 @@ Widget getRecipeDetail(BuildContext context, Recipe recipe) {
                     ],
                   ),
                   child: Text(
-                    '아보카도2개',
+                    recipe.ingredientList[1],
                     style: TextStyle(fontSize: 10),
                     textAlign: TextAlign.center,
                   ),
@@ -208,7 +215,7 @@ Widget getRecipeDetail(BuildContext context, Recipe recipe) {
                     ],
                   ),
                   child: Text(
-                    '계란 1알',
+                    '고춧가루 1스푼',
                     style: TextStyle(fontSize: 10),
                     textAlign: TextAlign.center,
                   ),
@@ -231,7 +238,7 @@ Widget getRecipeDetail(BuildContext context, Recipe recipe) {
                     ],
                   ),
                   child: Text(
-                    '새싹채소',
+                    '오이1개',
                     style: TextStyle(fontSize: 10),
                     textAlign: TextAlign.center,
                   ),
@@ -301,63 +308,41 @@ Widget getRecipeDetail(BuildContext context, Recipe recipe) {
           height: 20,
         ),
         Column(
-          children: [
-            Row(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(right: 15),
-                  padding: EdgeInsets.all(8),
-                  height: 30,
-                  width: 30,
-                  decoration: BoxDecoration(
-                      color: Colors.orange,
-                      borderRadius: BorderRadius.circular(100)),
-                  child: Text(
-                    '1',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: recipe.cookingOrder.map((e) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 5),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(right: 15),
+                      padding: EdgeInsets.all(8),
+                      height: 30,
+                      width: 30,
+                      decoration: BoxDecoration(
+                          color: Colors.orange,
+                          borderRadius: BorderRadius.circular(100)),
+                      child: Text(
+                        '${index++}',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Text(
-                  '명란젓을 손질하여 2스푼양을 준비해주세요',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(right: 15),
-                  padding: EdgeInsets.all(8),
-                  height: 30,
-                  width: 30,
-                  decoration: BoxDecoration(
-                      color: Colors.orange,
-                      borderRadius: BorderRadius.circular(100)),
-                  child: Text(
-                    '2',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                    Text(
+                      e,
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                  ),
+                  ],
                 ),
-                Text(
-                  '양파는 가늘게 채 썰어주세요',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ],
+              ),
+            );
+          }).toList(),
         ),
         SizedBox(
           height: 20,

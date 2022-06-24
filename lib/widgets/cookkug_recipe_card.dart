@@ -2,6 +2,8 @@ import 'package:cookkug/models/recipe/recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+import '../screens/recipedetail.dart';
+
 class CookkugRecipeCard extends StatelessWidget {
   final Recipe recipe;
   const CookkugRecipeCard({Key? key, required this.recipe})
@@ -10,7 +12,9 @@ class CookkugRecipeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {  Navigator.push(context,MaterialPageRoute(builder: (context){
+        return RecipeDetail(recipe: recipe);
+      }));},
       child: Container(
         width: 120,
         margin: const EdgeInsets.only(right: 10),

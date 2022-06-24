@@ -85,7 +85,7 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
                 'assets/icons/cookkug_friend${_currentIndex == 1 ? '_fill' : ''}.svg'),
-            label: '레시피꾹',
+            label: '꾹친',
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(

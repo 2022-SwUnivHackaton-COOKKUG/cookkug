@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../constants.dart';
 import '../models/cook/cook.dart';
+import '../screens/recipedetail.dart';
 
 class RecipeCard extends StatelessWidget {
   final Recipe recipe;
@@ -13,6 +14,9 @@ class RecipeCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         //TODO 여기서도 연결해줄것
+        Navigator.push(context,MaterialPageRoute(builder: (context){
+          return RecipeDetail(recipe: recipe);
+        }));
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),

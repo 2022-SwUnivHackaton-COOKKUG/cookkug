@@ -59,6 +59,7 @@ Widget kRecipeRecommendedArea(BuildContext context) {
             ),
           ),
         ),
+        SizedBox(height: 30),
         Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
@@ -100,9 +101,9 @@ Widget kRecipeRecommendedArea(BuildContext context) {
 Widget kNavigateToRecipeArea(BuildContext context) {
   Random rnd = Random();
   List<int> randomList = [];
-  for(int i =0;i<3;i++){
+  for (int i = 0; i < 3; i++) {
     int value = rnd.nextInt(16);
-    while(randomList.contains(value)){
+    while (randomList.contains(value)) {
       value = rnd.nextInt(16);
     }
     randomList.add(value);
@@ -110,8 +111,14 @@ Widget kNavigateToRecipeArea(BuildContext context) {
   return Container(
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
-      color: kLightGreyColor,
-    ),
+        gradient: LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        kWhiteColor,
+        kLightGreyColor,
+      ],
+    )),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -149,10 +156,11 @@ Widget kNavigateToRecipeArea(BuildContext context) {
 
 Widget kRecipeButton(BuildContext context, {required String text}) {
   return GestureDetector(
-    onTap: ()async {
-      List data = kKeyworkList.firstWhere((element) => element[0]==text);
-      List<Recipe> recipeList = await HttpService().getRecipeListWithKeywork('${data[1]}');
-      Navigator.push(context,MaterialPageRoute(builder: (context){
+    onTap: () async {
+      List data = kKeyworkList.firstWhere((element) => element[0] == text);
+      List<Recipe> recipeList =
+          await HttpService().getRecipeListWithKeywork('${data[1]}');
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
         return RecipeKeyworkScreen(keyword: data[0], recipeList: recipeList);
       }));
     },
@@ -160,7 +168,9 @@ Widget kRecipeButton(BuildContext context, {required String text}) {
       elevation: 2,
       borderRadius: BorderRadius.circular(30),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        alignment: Alignment.center,
+        width: 100,
+        padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 20),
         decoration: BoxDecoration(
           color: kWhiteColor,
           borderRadius: BorderRadius.circular(30),
@@ -168,7 +178,7 @@ Widget kRecipeButton(BuildContext context, {required String text}) {
         child: Text(
           '#$text',
           style: const TextStyle(
-            fontSize: 16,
+            fontSize: 14,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -183,22 +193,28 @@ Widget kFriendCookArea(BuildContext context) {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<Recipe> recipeList = snapshot.data as List<Recipe>;
-          if(recipeList.isEmpty) return Container();
+          if (recipeList.isEmpty) return Container();
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      width: 60,
-                      height: 40,
-                      child: Image.asset(
-                        'assets/logo/character_logo.png',
-                        fit: BoxFit.fitWidth,
-                      ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        SizedBox(width: 20),
+                        SizedBox(
+                          width: 60,
+                          height: 40,
+                          child: Image.asset(
+                            'assets/logo/friend_recipe_logo.png',
+                            fit: BoxFit.fitWidth,
+                          ),
+                        ),
+                      ],
                     ),
                     Row(
                       children: [

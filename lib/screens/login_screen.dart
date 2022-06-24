@@ -1,3 +1,4 @@
+import 'package:cookkug/constants.dart';
 import 'package:cookkug/services/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -60,9 +61,9 @@ class LoginScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Image.asset(
-                      'assets/images/2.png',
+                      'assets/logo/text_logo.png',
                       height: 200,
-                      width: 400,
+                      width: 300,
                     ),
                     //이메일 텍스트필드
                     Container(
@@ -163,14 +164,28 @@ class LoginScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold))),
             Container(
               margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: ElevatedButton(
                 onPressed: () => googleSignIn(context),
                 style: ElevatedButton.styleFrom(primary: Colors.white),
-                child: const Image(
-                  image: AssetImage('assets/images/google.png'),
-                  width: 20.0,
-                  height: 20.0,
-                  fit: BoxFit.fill,
+                child: Row(
+                  children: [
+                    const Image(
+                      image: AssetImage('assets/images/google.png'),
+                      width: 20.0,
+                      height: 20.0,
+                      fit: BoxFit.fill,
+                    ),
+                    Expanded(
+                      child: Text(
+                        '구글 로그인',
+                        style: TextStyle(
+                          color: kDarkGreyColor,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
