@@ -1,26 +1,29 @@
-# COOKKUG
+# C3 - COOKKUG(쿡꾹)
 
-SW중심대학협의회 해커톤 - 쿡꾹
+![cookkug_logo](https://user-images.githubusercontent.com/76200940/175440718-133cff06-d5fb-4f11-a2d1-9f6f4e8a3ea8.png)
 
-### 폴더구조
-- screens : 각 화면의 UI
-- widgets : 재사용되는 위젯
-- utils : 자체적으로 사용되는 logic/function
-- controllers : 각종 컨트롤러
-- models : 모델
-- services : 앱 내외적으로 통신(Local/Server(Fast API)/Firebase)
-- constants.dart : 중복적으로 사용될수있는 Color, Style 등을 저장
+## 팀원소개
+- (개발자)안선영_한림대학교 - 프론트엔드
+- (개발자)최홍록_국민대학교 - 백엔드 & AI
+- (개발자)김수빈_순천향대학교 - 프론트엔드
+- (개발자)윤정훈_충남대학교 - 프론트엔드
+- (디자이너)김한이_대구가톨릭대학교 - 디자인
 
-### 참고
-- 객체 클래스 자동생성 : flutter pub run build_runner build 를 루트 터미널에서 실행
+## 프로젝트 배경
+'뭐해먹지?' 고민은 이제 그만! 자취생을 위한 30분 내외, 간단한 재료들로 구성된 레시피를 볼 수 있으면 좋겠다고 생각했습니다. 그리고 자신이 한 요리를 사진으로 남겨두는 SNS, 비슷한 요리에 관심있는 사람끼리 모일 수 있는 커뮤니티를 통해 자취생들이 요리하는 문화가 발달했으면 좋겠습니다.
 
-### Github 작업
-- pull(가져오기 -> git pull origin main을 통해 병합된 브랜치로부터 데이터를 가져와서 사용 가능)
-- pull = fetch + merge (가장 최신버전을 가져온후에 merge하는거라 충돌날수도있어서 기왕이면 main에서 작업은 최대한 피하는것이 좋음)
+## 개발/배포 환경
+### 개발환경
+- 프론트엔드 : Flutter(Dart)
+- 백엔드 : FastAPI(Python)
+- AI : Word2vec, fastText(Python)
+- 디자인 : AdobeXD
+### 배포환경
+- Ubuntu
 
-1. git branch를 통해 현재 branch 확인
-2. git branch 브랜치명 ex) git branch junghun2 를 통해 새로운 브랜치 생성 (작업할 브랜치 생성)
-3. git checkout junghun2 와 같이 현재 브랜치를 이동한 후
-4. git branch를 통해 브랜치가 올바르게 바뀌었나 확인
-5. 작업후 git add 작업한 파일(편하게 . 사용도 가능하긴 함) 후 git commit ,git push를 통해 해당 브랜치에 기능 구현을 끝마치고 github에 업로드하기 -> 이후 선영님께 알리고 바로 merge되는걸 확인하는게 좋을거라 생각
-6. 선영님이 main브랜치에서 merge하기(여러명이서 main에 push할경우 conflict가 자주나기때문에 이는 피하는게 좋지않을까 생각)
+## 활용/참고 정보
+- https://github.com/JideGuru/FlutterFoodybite
+
+## 영상 유튜브 링크
+[link]()
+
