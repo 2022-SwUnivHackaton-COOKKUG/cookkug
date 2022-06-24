@@ -25,5 +25,5 @@
 - https://github.com/JideGuru/FlutterFoodybite
 
 ## 영상 유튜브 링크
-[link]()
+[link](https://youtu.be/a9uKvke8tb0)
 
